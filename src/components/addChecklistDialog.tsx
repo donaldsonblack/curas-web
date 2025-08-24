@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -52,8 +52,13 @@ const checklistSchema = z.object({
 
 type ChecklistFormValues = z.infer<typeof checklistSchema>;
 
-export default function AddChecklistDialog() {
+interface AddChecklistDialogProps {
+  onChecklistCreated: () => void;
+}
+
+export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const { apiFetch } = useApi();
 
   const form = useForm<ChecklistFormValues>({
@@ -69,14 +74,22 @@ export default function AddChecklistDialog() {
     },
   });
 
+  useEffect(() => {
+    if (!isOpen) {
+      form.reset();
+      setSubmissionError(null);
+    }
+  }, [isOpen, form]);
+
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "questions",
   });
 
   const onSubmit = async (data: ChecklistFormValues) => {
+    setSubmissionError(null);
     try {
-      const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/checklists/table`, {
+      const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/checklists`, {
         method: 'POST',
         body: JSON.stringify({
           ...data,
@@ -85,10 +98,14 @@ export default function AddChecklistDialog() {
       });
       console.log("Checklist created:", response);
       setIsOpen(false);
-      form.reset();
-      // Here you might want to trigger a refetch of the checklists data
+      onChecklistCreated(); // Trigger refetch
     } catch (error) {
       console.error("Failed to create checklist:", error);
+      if (error instanceof Error) {
+        setSubmissionError(error.message);
+      } else {
+        setSubmissionError("An unknown error occurred while creating the checklist.");
+      }
     }
   };
 
@@ -223,6 +240,7 @@ export default function AddChecklistDialog() {
           </div>
 
           <DialogFooter>
+            {submissionError && <p className="text-sm text-red-500 mr-auto">{submissionError}</p>}
             <Button type="button" variant="ghost" onClick={() => setIsOpen(false)}>Cancel</Button>
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? "Creating..." : "Create Checklist"}

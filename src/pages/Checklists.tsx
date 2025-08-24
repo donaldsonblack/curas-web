@@ -22,7 +22,7 @@ function slugify(input: string): string {
 }
 
 export default function Checklists() {
-  const { data, loading, error } = useChecklistTableData();
+  const { data, loading, error, refetch } = useChecklistTableData();
   const isAdmin = useAdmin();
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<"title" | "name">("title");
@@ -104,7 +104,7 @@ export default function Checklists() {
             </SelectContent>
           </Select>
         </div>
-        {isAdmin && <AddChecklistDialog />}
+        {isAdmin && <AddChecklistDialog onChecklistCreated={refetch} />}
       </div>
       <ChecklistCardHandler items={filteredSorted} />
     </div>

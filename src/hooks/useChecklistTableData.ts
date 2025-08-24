@@ -17,6 +17,7 @@ export function useChecklistTableData(): {
   data: ChecklistRow[]
   loading: boolean
   error: string | null
+  refetch: () => void
 } {
   const [data, setData] = useState<ChecklistRow[]>([])
   const [loading, setLoading] = useState(true)
@@ -24,20 +25,23 @@ export function useChecklistTableData(): {
 
   const { apiFetch } = useApi()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/checklists/table`)
-        setData(response)
-      } catch (err) {
-        setError((err as Error).message)
-      } finally {
-        setLoading(false)
-      }
+  const fetchData = async () => {
+    setLoading(true)
+    try {
+      const response = await apiFetch(
+        `${import.meta.env.VITE_API_URL}/api/checklists/table`
+      )
+      setData(response)
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     fetchData()
   }, [])
 
-  return { data, loading, error }
+  return { data, loading, error, refetch: fetchData }
 }
