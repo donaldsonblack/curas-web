@@ -2,6 +2,7 @@ import { useAuth } from "react-oidc-context";
 
 export const useApi = () => {
   const auth = useAuth();
+  const authorId = auth.user?.profile.sub; // Assuming 'sub' is the user ID
 
   const apiFetch = async (url: string, options: RequestInit = {}) => {
     const token = auth.user?.access_token;
@@ -26,7 +27,7 @@ export const useApi = () => {
     return res.json();
   };
 
-  return { apiFetch };
+  return { apiFetch, authorId };
 };
 
 export const signoutRedirect = () => {

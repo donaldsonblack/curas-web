@@ -29,12 +29,12 @@ export default function Checklists() {
 
   const items: ChecklistItem[] = (data || []).map((row, idx) => {
     const equipLabel = [row.equipmentName, row.equipmentModel].filter(Boolean).join(" – ");
-    const id = `CL-${slugify(row.equipmentName || "equip")}-${slugify(row.frequency || "freq")}-${idx + 1}`;
+    const id = `CL-${slugify(row.equipmentName || "equip")}-${slugify(row.type || "type")}-${idx + 1}`;
 
     return {
       id,
       name: equipLabel || row.equipmentName || "Equipment",
-      title: row.name || `${row.frequency} Checklist`,
+      title: row.name || `${row.type} Checklist`,
       description: row.description || "",
       questions: row.questions || [], // Corrected data mapping
     } as ChecklistItem;

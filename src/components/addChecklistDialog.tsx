@@ -26,6 +26,17 @@ import {
 } from "./ui/select";
 import { useApi } from "../auth/useAuth";
 
+interface Department {
+  id: number;
+  name: string;
+}
+
+interface Equipment {
+  id: number;
+  name: string;
+  model: string;
+}
+
 const questionSchema = z.object({
   type: z.enum(["text", "number", "select", "multi-select", "checkbox"], { required_error: "Question type is required." }),
   question: z.string().min(1, "Question text cannot be empty."),
@@ -43,10 +54,9 @@ const questionSchema = z.object({
 const checklistSchema = z.object({
   name: z.string().min(1, "Checklist name is required."),
   description: z.string().min(1, "Description is required."),
-  equipmentName: z.string().min(1, "Equipment name is required."),
-  equipmentModel: z.string().min(1, "Equipment model is required."),
-  departmentName: z.string().min(1, "Department is required."),
-  frequency: z.string().min(1, "Frequency is required."),
+  type: z.string().min(1, "Type is required."),
+  departmentId: z.number({ required_error: "Department is required." }),
+  equipmentId: z.number({ required_error: "Equipment is required." }),
   questions: z.array(questionSchema).min(1, "At least one question is required."),
 });
 
@@ -59,20 +69,31 @@ interface AddChecklistDialogProps {
 export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
-  const { apiFetch } = useApi();
+  const departments: Department[] = [
+    { id: 1, name: "Maintenance" },
+    { id: 2, name: "Operations" },
+  ];
+  const equipment: Equipment[] = [
+    { id: 1, name: "Forklift", model: "FL-2000" },
+    { id: 2, name: "Generator", model: "GEN-50" },
+  ];
+  const { apiFetch, authorId } = useApi();
 
   const form = useForm<ChecklistFormValues>({
     resolver: zodResolver(checklistSchema),
     defaultValues: {
       name: "",
       description: "",
-      equipmentName: "",
-      equipmentModel: "",
-      departmentName: "",
-      frequency: "",
+      type: "",
       questions: [{ type: "text", question: "", options: [] }],
     },
   });
+
+  useEffect(() => {
+    if (!isOpen) {
+      form.reset();
+    }
+  }, [isOpen, form]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -88,24 +109,34 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
 
   const onSubmit = async (data: ChecklistFormValues) => {
     setSubmissionError(null);
+    if (!authorId) {
+      setSubmissionError("Could not identify the author. Please log in again.");
+      return;
+    }
+
+    const payload = {
+      name: data.name,
+      description: data.description,
+      type: data.type,
+      departmentId: data.departmentId,
+      equipmentId: data.equipmentId,
+      authorId: parseInt(authorId, 10),
+      questions: data.questions.reduce((acc, q, index) => {
+        acc[index] = q;
+        return acc;
+      }, {} as Record<string, any>),
+    };
+
     try {
-      const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/checklists`, {
+      await apiFetch(`https://curas.blac.dev/api/checklists`, {
         method: 'POST',
-        body: JSON.stringify({
-          ...data,
-          createdDate: new Date().toISOString(),
-        }),
+        body: JSON.stringify(payload),
       });
-      console.log("Checklist created:", response);
       setIsOpen(false);
       onChecklistCreated(); // Trigger refetch
     } catch (error) {
-      console.error("Failed to create checklist:", error);
-      if (error instanceof Error) {
-        setSubmissionError(error.message);
-      } else {
-        setSubmissionError("An unknown error occurred while creating the checklist.");
-      }
+      console.error("Submission failed:", error);
+      setSubmissionError((error as Error).message);
     }
   };
 
@@ -129,20 +160,20 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
               {form.formState.errors.name && <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>}
             </div>
             <div>
-              <Label htmlFor="frequency">Frequency</Label>
-              <Select onValueChange={(value) => form.setValue("frequency", value)} defaultValue={form.getValues("frequency")}>
+              <Label htmlFor="type">Type</Label>
+              <Select onValueChange={(value) => form.setValue("type", value)} defaultValue={form.getValues("type")}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select frequency" />
+                  <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Daily">Daily</SelectItem>
                   <SelectItem value="Weekly">Weekly</SelectItem>
                   <SelectItem value="Monthly">Monthly</SelectItem>
                   <SelectItem value="Quarterly">Quarterly</SelectItem>
-                  <SelectItem value="Yearly">Yearly</SelectItem>
+                  <SelectItem value="Annually">Annually</SelectItem>
                 </SelectContent>
               </Select>
-              {form.formState.errors.frequency && <p className="text-sm text-red-500">{form.formState.errors.frequency.message}</p>}
+              {form.formState.errors.type && <p className="text-sm text-red-500">{form.formState.errors.type.message}</p>}
             </div>
           </div>
 
@@ -154,33 +185,33 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="equipmentName">Equipment Name</Label>
-              <Input id="equipmentName" {...form.register("equipmentName")} />
-              {form.formState.errors.equipmentName && <p className="text-sm text-red-500">{form.formState.errors.equipmentName.message}</p>}
+              <Label htmlFor="departmentId">Department</Label>
+              <Select onValueChange={(value) => form.setValue("departmentId", parseInt(value, 10))} defaultValue={form.getValues("departmentId")?.toString()}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a department" />
+                </SelectTrigger>
+                <SelectContent>
+                  {departments.map((dept) => (
+                    <SelectItem key={dept.id} value={dept.id.toString()}>{dept.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {form.formState.errors.departmentId && <p className="text-sm text-red-500">{form.formState.errors.departmentId.message}</p>}
             </div>
             <div>
-              <Label htmlFor="equipmentModel">Equipment Model</Label>
-              <Input id="equipmentModel" {...form.register("equipmentModel")} />
-              {form.formState.errors.equipmentModel && <p className="text-sm text-red-500">{form.formState.errors.equipmentModel.message}</p>}
+              <Label htmlFor="equipmentId">Equipment</Label>
+              <Select onValueChange={(value) => form.setValue("equipmentId", parseInt(value, 10))} defaultValue={form.getValues("equipmentId")?.toString()}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select equipment" />
+                </SelectTrigger>
+                <SelectContent>
+                  {equipment.map((equip) => (
+                    <SelectItem key={equip.id} value={equip.id.toString()}>{equip.name} - {equip.model}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {form.formState.errors.equipmentId && <p className="text-sm text-red-500">{form.formState.errors.equipmentId.message}</p>}
             </div>
-          </div>
-
-          <div>
-            <Label htmlFor="departmentName">Department</Label>
-            <Select onValueChange={(value) => form.setValue("departmentName", value)} defaultValue={form.getValues("departmentName")}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a department" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Cardiology">Cardiology</SelectItem>
-                <SelectItem value="Radiology">Radiology</SelectItem>
-                <SelectItem value="Surgery">Surgery</SelectItem>
-                <SelectItem value="Pediatrics">Pediatrics</SelectItem>
-                <SelectItem value="Oncology">Oncology</SelectItem>
-                <SelectItem value="Emergency">Emergency</SelectItem>
-              </SelectContent>
-            </Select>
-            {form.formState.errors.departmentName && <p className="text-sm text-red-500">{form.formState.errors.departmentName.message}</p>}
           </div>
 
           <div>

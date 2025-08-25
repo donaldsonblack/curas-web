@@ -17,7 +17,6 @@ export default defineConfig({
       '/api': {
         target: 'https://curas.blac.dev', // Your backend server
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '/api'),
       },
     },
   },
