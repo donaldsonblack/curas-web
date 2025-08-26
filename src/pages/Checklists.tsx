@@ -13,6 +13,7 @@ import {
 } from "../components/ui/select";
 import { Search } from "lucide-react";
 import { useChecklistTableData } from "../hooks/useChecklistTableData";
+import ChecklistCardSkeleton from "../components/checklistCardSkeleton";
 
 
 export default function Checklists() {
@@ -63,7 +64,35 @@ export default function Checklists() {
   
   if (loading) {
     return (
-      <div className="p-4 text-sm text-muted-foreground">Loading checklists…</div>
+      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+        {/* Toolbar Skeleton */}
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search checklists..."
+                className="w-64 pl-9"
+                disabled
+              />
+            </div>
+            <Select disabled>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Sort by..." />
+              </SelectTrigger>
+            </Select>
+          </div>
+        </div>
+        {/* Grid Skeleton */}
+        <div
+          className="grid gap-4"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(16rem, 1fr))" }}
+        >
+          {Array.from({ length: 6 }).map((_, index) => (
+            <ChecklistCardSkeleton key={index} />
+          ))}
+        </div>
+      </div>
     );
   }
 

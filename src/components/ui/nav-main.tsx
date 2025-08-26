@@ -12,7 +12,6 @@ import {
 } from "./sidebar";
 import { Link } from "react-router-dom";
 import { primaryRoutes } from "../../Routes";
-
 export function NavMain() {
   const mainRoutes = primaryRoutes;
 

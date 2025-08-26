@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -66,8 +66,11 @@ interface AddChecklistDialogProps {
   onChecklistCreated: () => void;
 }
 
+import confetti from 'canvas-confetti';
+
 export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const confettiRef = useRef<HTMLButtonElement>(null);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const departments: Department[] = [
     { id: 1, name: "Maintenance" },
@@ -136,11 +139,31 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      setIsOpen(false);
-      onChecklistCreated(); // Trigger refetch
+
+      handleConfetti();
+      setTimeout(() => {
+        setIsOpen(false);
+        onChecklistCreated(); // Trigger refetch
+      }, 1000); // Delay closing the dialog to allow confetti to show
     } catch (error) {
       console.error("Submission failed:", error);
-      setSubmissionError((error as Error).message);
+      setSubmissionError("Failed to create checklist. Please try again.");
+    }
+  };
+
+  const handleConfetti = () => {
+    if (confettiRef.current) {
+      const rect = confettiRef.current.getBoundingClientRect();
+      const origin = {
+        x: (rect.left + rect.right) / 2 / window.innerWidth,
+        y: (rect.top + rect.bottom) / 2 / window.innerHeight,
+      };
+
+      confetti({
+        particleCount: 100,
+        spread: 100,
+        origin: origin,
+      });
     }
   };
 
@@ -277,7 +300,7 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
           <DialogFooter>
             {submissionError && <p className="text-sm text-red-500 mr-auto">{submissionError}</p>}
             <Button type="button" variant="ghost" onClick={() => setIsOpen(false)}>Cancel</Button>
-            <Button type="submit" disabled={form.formState.isSubmitting}>
+            <Button ref={confettiRef} type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? "Creating..." : "Create Checklist"}
             </Button>
           </DialogFooter>
