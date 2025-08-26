@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableQuestion } from './SortableQuestion';
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { PlusCircle, X } from "lucide-react";
+import { GripVertical, PlusCircle, X } from "lucide-react";
 
 import { Button } from "./ui/button";
 import {
@@ -105,7 +108,23 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
     }
   }, [isOpen, form]);
 
-  const { fields, append, remove } = useFieldArray({
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = fields.findIndex((field) => field.id === active.id);
+      const newIndex = fields.findIndex((field) => field.id === over.id);
+      move(oldIndex, newIndex);
+    }
+  };
+
+  const { fields, append, remove, move } = useFieldArray({
     control: form.control,
     name: "questions",
   });
@@ -243,47 +262,64 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
 
           <div>
             <Label>Questions</Label>
-            <div className="space-y-3 pt-2">
-              {fields.map((field, index) => (
-                <div key={field.id} className="flex items-start gap-2 p-3 border rounded-lg bg-slate-50/50">
-                  <div className="grid gap-3 flex-grow">
-                    <div className="grid grid-cols-[1fr_auto] gap-2">
-                      <Select
-                        onValueChange={(value: 'text' | 'number' | 'select' | 'multi-select' | 'checkbox') => {
-                          form.setValue(`questions.${index}.type`, value)
-                        }}
-                        defaultValue={field.type}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Question Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="text">Text</SelectItem>
-                          <SelectItem value="number">Number</SelectItem>
-                          <SelectItem value="checkbox">Checkbox</SelectItem>
-                          <SelectItem value="select">Select</SelectItem>
-                          <SelectItem value="multi-select">Multi-select</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Button type="button" variant="ghost" size="icon" onClick={() => remove(index)} className="shrink-0">
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <Textarea
-                      placeholder={`Question ${index + 1}`}
-                      {...form.register(`questions.${index}.question`)}
-                      className="bg-white"
-                    />
-                    {form.formState.errors.questions?.[index]?.question && <p className="text-sm text-red-500">{form.formState.errors.questions?.[index]?.question?.message}</p>}
-                    
-                    {(form.watch(`questions.${index}.type`) === 'select' || form.watch(`questions.${index}.type`) === 'multi-select') && (
-                      <OptionsField control={form.control} nestIndex={index} />
-                    )}
-                  </div>
-
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+              <SortableContext items={fields.map(f => f.id)} strategy={verticalListSortingStrategy}>
+                <div className="space-y-3 pt-2">
+                  {fields.map((field, index) => (
+                    <SortableQuestion key={field.id} id={field.id}>
+                      {(listeners, attributes) => (
+                        <div className="flex items-start gap-2 p-3 border rounded-lg bg-slate-50/50 w-full">
+                           <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="shrink-0 cursor-grab touch-none mt-1"
+                            {...attributes}
+                            {...listeners}
+                          >
+                            <GripVertical className="h-5 w-5" />
+                          </Button>
+                          <div className="grid gap-3 flex-grow">
+                            <div className="grid grid-cols-[1fr_auto] gap-2">
+                              <Select
+                                onValueChange={(value: 'text' | 'number' | 'select' | 'multi-select' | 'checkbox') => {
+                                  form.setValue(`questions.${index}.type`, value)
+                                }}
+                                defaultValue={field.type}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Question Type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="text">Text</SelectItem>
+                                  <SelectItem value="number">Number</SelectItem>
+                                  <SelectItem value="checkbox">Checkbox</SelectItem>
+                                  <SelectItem value="select">Select</SelectItem>
+                                  <SelectItem value="multi-select">Multi-select</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <Button type="button" variant="ghost" size="icon" onClick={() => remove(index)} className="shrink-0">
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <Textarea
+                              placeholder={`Question ${index + 1}`}
+                              {...form.register(`questions.${index}.question`)}
+                              className="bg-white"
+                            />
+                            {form.formState.errors.questions?.[index]?.question && <p className="text-sm text-red-500">{form.formState.errors.questions?.[index]?.question?.message}</p>}
+                            
+                            {(form.watch(`questions.${index}.type`) === 'select' || form.watch(`questions.${index}.type`) === 'multi-select') && (
+                              <OptionsField control={form.control} nestIndex={index} />
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </SortableQuestion>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </SortableContext>
+            </DndContext>
             {form.formState.errors.questions && !form.formState.errors.questions.root && <p className="text-sm text-red-500 mt-1">{form.formState.errors.questions.message}</p>}
             <Button
               type="button"
