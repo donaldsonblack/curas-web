@@ -17,7 +17,8 @@ import React, {
   useRef,
 } from "react";
 
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import type { VariantProps } from "class-variance-authority";
 
 type Api = {
   fire: (options?: ConfettiOptions) => void;
@@ -109,7 +110,9 @@ ConfettiComponent.displayName = "Confetti";
 // Export as Confetti
 export const Confetti = ConfettiComponent;
 
-interface ConfettiButtonProps extends ButtonProps {
+interface ConfettiButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   options?: ConfettiOptions &
     ConfettiGlobalOptions & { canvas?: HTMLCanvasElement };
   children?: React.ReactNode;

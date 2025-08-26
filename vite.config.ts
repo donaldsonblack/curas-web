@@ -22,7 +22,7 @@ export default defineConfig({
   },
   preview: {
     // allow exactly this host, or use `['.blac.dev']` to whitelist the whole domain
-    allowedHosts: ['cura.blac.dev'],
+    allowedHosts: ['curas.blac.dev'],
 
     // if preview needs to bind to 0.0.0.0 as well:
     host: '0.0.0.0',
