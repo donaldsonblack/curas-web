@@ -49,7 +49,7 @@ export function ChecklistTable() {
 								{item.equipmentName} {item.equipmentModel}
 							</TableCell>
 							<TableCell className="px-2 py-1">{item.departmentName}</TableCell>
-							<TableCell className="px-2 py-1">{item.frequency}</TableCell>
+							<TableCell className="px-2 py-1">{/* {item.frequency} */}freq</TableCell>
 							<TableCell className="px-2 py-1">{item.authorName}</TableCell>
 							<TableCell className="px-2 py-1">
 								{new Date(item.createdDate).toLocaleDateString()}
