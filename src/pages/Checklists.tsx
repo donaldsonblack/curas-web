@@ -14,6 +14,7 @@ import {
 import { Search } from "lucide-react";
 import { useChecklistTableData } from "../hooks/useChecklistTableData";
 import ChecklistCardSkeleton from "../components/checklistCardSkeleton";
+import { Skeleton } from "../components/ui/skeleton";
 
 
 export default function Checklists() {
@@ -68,19 +69,8 @@ export default function Checklists() {
         {/* Toolbar Skeleton */}
         <div className="flex items-center justify-between gap-3 mb-6">
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search checklists..."
-                className="w-64 pl-9"
-                disabled
-              />
-            </div>
-            <Select disabled>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by..." />
-              </SelectTrigger>
-            </Select>
+            <Skeleton className="h-10 w-64" />
+            <Skeleton className="h-10 w-[180px]" />
           </div>
         </div>
         {/* Grid Skeleton */}

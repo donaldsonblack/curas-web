@@ -135,7 +135,7 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
     };
 
     try {
-      await apiFetch(`https://curas.blac.dev/api/checklists`, {
+      await apiFetch(`$${import.meta.env.VITE_API_URL}/checklists`, {
         method: 'POST',
         body: JSON.stringify(payload),
       });

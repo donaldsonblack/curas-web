@@ -57,7 +57,7 @@ export function ChecklistDialog({ isOpen, onClose, checklistData }: ChecklistDia
     };
 
     try {
-      await apiFetch(`https://curas.blac.dev/api/records`, {
+      await apiFetch(`${import.meta.env.VITE_API_URL}/api/records`, {
         method: "POST",
         body: JSON.stringify(payload),
       });

@@ -26,7 +26,7 @@ export function useUsersTableData(): {
   const fetchData = async () => {
     setLoading(true)
     try {
-      const response = await apiFetch(`https://curas.blac.dev/api/users`)
+      const response = await apiFetch(`${import.meta.env.VITE_API_URL}/api/users`)
       setData(response)
     } catch (err) {
       setError((err as Error).message)

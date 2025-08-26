@@ -3,7 +3,7 @@ import { Skeleton } from "./ui/skeleton";
 
 export default function ChecklistCardSkeleton() {
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col border-0 shadow-none">
       <CardHeader>
         <Skeleton className="h-6 w-3/4" />
       </CardHeader>
