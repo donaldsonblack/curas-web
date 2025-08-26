@@ -120,7 +120,7 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
       type: data.type,
       departmentId: data.departmentId,
       equipmentId: data.equipmentId,
-      authorId: parseInt(authorId, 10),
+      authorId: 1,
       questions: data.questions.reduce((acc, q, index) => {
         acc[index] = {
           type: q.type,

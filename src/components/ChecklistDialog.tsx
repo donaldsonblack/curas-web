@@ -49,7 +49,7 @@ export function ChecklistDialog({ isOpen, onClose, checklistData }: ChecklistDia
     setIsSubmitting(true);
     const payload = {
       checklistId: checklistData.id,
-      authorId: parseInt(authorId, 10),
+      authorId: 1,
       answers: checklistData.items.map((item) => ({
         question: item.question,
         answer: answers[item.question] ?? "", // Default to empty string if no answer
@@ -57,7 +57,7 @@ export function ChecklistDialog({ isOpen, onClose, checklistData }: ChecklistDia
     };
 
     try {
-      await apiFetch(`https://curas.blac.dev/api/record`, {
+      await apiFetch(`https://curas.blac.dev/api/records`, {
         method: "POST",
         body: JSON.stringify(payload),
       });
