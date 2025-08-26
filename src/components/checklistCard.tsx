@@ -1,5 +1,5 @@
 export interface checklistCardProps {
-  id: string;
+  id: number;
   name: string;
   title: string;
   description: string;
@@ -31,7 +31,7 @@ export default function ChecklistCard({ id, title, description, questions }: che
   const [selectedChecklist, setSelectedChecklist] = useState<any>(null);
 
   const handleStartChecklist = () => {
-    setSelectedChecklist({ title, items: questions });
+    setSelectedChecklist({ id, title, items: questions });
     setIsDialogOpen(true);
   };
 

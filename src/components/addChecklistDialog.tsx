@@ -122,7 +122,11 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
       equipmentId: data.equipmentId,
       authorId: parseInt(authorId, 10),
       questions: data.questions.reduce((acc, q, index) => {
-        acc[index] = q;
+        acc[index] = {
+          type: q.type,
+          question: q.question,
+          options: q.options || [], // Ensure options is always an array
+        };
         return acc;
       }, {} as Record<string, any>),
     };

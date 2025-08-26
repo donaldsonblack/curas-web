@@ -1,31 +1,35 @@
+import { useCallback } from "react";
 import { useAuth } from "react-oidc-context";
 
 export const useApi = () => {
   const auth = useAuth();
   const authorId = auth.user?.profile.sub; // Assuming 'sub' is the user ID
 
-  const apiFetch = async (url: string, options: RequestInit = {}) => {
-    const token = auth.user?.access_token;
+  const apiFetch = useCallback(
+    async (url: string, options: RequestInit = {}) => {
+      const token = auth.user?.access_token;
 
-    if (!token) {
-      throw new Error("Access token not available");
-    }
+      if (!token) {
+        throw new Error("Access token not available");
+      }
 
-    const res = await fetch(url, {
-      ...options,
-      headers: {
-        ...(options.headers || {}),
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+      const res = await fetch(url, {
+        ...options,
+        headers: {
+          ...(options.headers || {}),
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
 
-    return res.json();
-  };
+      return res.json();
+    },
+    [auth.user?.access_token]
+  );
 
   return { apiFetch, authorId };
 };

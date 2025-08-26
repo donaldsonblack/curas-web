@@ -1,3 +1,7 @@
+// FOR ENTERING A NEW CHECKLIST
+
+import { useState } from "react";
+import { useApi } from "../auth/useAuth";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import {
@@ -24,12 +28,48 @@ interface ChecklistDialogProps {
   isOpen: boolean;
   onClose: () => void;
   checklistData: {
+    id: number; // Use the numeric ID
     title: string;
     items: ChecklistItem[];
   } | null;
 }
 
 export function ChecklistDialog({ isOpen, onClose, checklistData }: ChecklistDialogProps) {
+  const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { apiFetch, authorId } = useApi();
+
+  const handleAnswerChange = (question: string, answer: string | boolean) => {
+    setAnswers((prev) => ({ ...prev, [question]: answer }));
+  };
+
+  const handleSubmit = async () => {
+    if (!checklistData || !authorId) return;
+
+    setIsSubmitting(true);
+    const payload = {
+      checklistId: checklistData.id,
+      authorId: parseInt(authorId, 10),
+      answers: checklistData.items.map((item) => ({
+        question: item.question,
+        answer: answers[item.question] ?? "", // Default to empty string if no answer
+      })),
+    };
+
+    try {
+      await apiFetch(`https://curas.blac.dev/api/record`, {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+      onClose(); // Close dialog on success
+    } catch (error) {
+      console.error("Failed to submit checklist record:", error);
+      // Optionally, show an error message to the user
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (!checklistData) {
     return null;
   }
@@ -51,7 +91,10 @@ export function ChecklistDialog({ isOpen, onClose, checklistData }: ChecklistDia
                 <CardContent className="px-6 py-2">
                   {item.type === "boolean" ? (
                     <div className="flex items-center space-x-3">
-                      <Checkbox id={itemId} />
+                      <Checkbox
+                        id={itemId}
+                        onCheckedChange={(checked) => handleAnswerChange(item.question, !!checked)}
+                      />
                       <Label htmlFor={itemId} className="font-normal">
                         {item.question}
                       </Label>
@@ -59,8 +102,14 @@ export function ChecklistDialog({ isOpen, onClose, checklistData }: ChecklistDia
                   ) : (
                     <div className="flex flex-col space-y-2">
                       <Label htmlFor={itemId}>{item.question}</Label>
-                      {item.type === "text" && <Input id={itemId} />}
-                      {item.type === "textarea" && <Textarea id={itemId} />}
+                      {item.type === "text" && <Input
+                        id={itemId}
+                        onChange={(e) => handleAnswerChange(item.question, e.target.value)}
+                      />}
+                      {item.type === "textarea" && <Textarea
+                        id={itemId}
+                        onChange={(e) => handleAnswerChange(item.question, e.target.value)}
+                      />}
                     </div>
                   )}
                 </CardContent>
@@ -69,7 +118,9 @@ export function ChecklistDialog({ isOpen, onClose, checklistData }: ChecklistDia
           })}
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button onClick={handleSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit Checklist"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -14,12 +14,6 @@ import {
 import { Search } from "lucide-react";
 import { useChecklistTableData } from "../hooks/useChecklistTableData";
 
-function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
 
 export default function Checklists() {
   const { data, loading, error, refetch } = useChecklistTableData();
@@ -27,17 +21,16 @@ export default function Checklists() {
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<"title" | "name">("title");
 
-  const items: ChecklistItem[] = (data || []).map((row, idx) => {
+  const items: ChecklistItem[] = (data || []).map((row) => {
     const equipLabel = [row.equipmentName, row.equipmentModel].filter(Boolean).join(" – ");
-    const id = `CL-${slugify(row.equipmentName || "equip")}-${slugify(row.type || "type")}-${idx + 1}`;
 
     return {
-      id,
+      id: row.id,
       name: equipLabel || row.equipmentName || "Equipment",
       title: row.name || `${row.type} Checklist`,
       description: row.description || "",
-      questions: row.questions || [], // Corrected data mapping
-    } as ChecklistItem;
+      questions: row.questions || [],
+    };
   });
 
   const filteredSorted = useMemo(() => {
@@ -62,7 +55,7 @@ export default function Checklists() {
       const altB = (sortBy === "name" ? b.title : b.name).toLowerCase();
       if (altA < altB) return -1;
       if (altA > altB) return 1;
-      return a.id.localeCompare(b.id);
+      return a.id - b.id;
     });
 
     return sorted;

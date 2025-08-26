@@ -51,6 +51,7 @@ export const primaryRoutes: AppRoute[] = [
     icon: <Building className="w-4 h-4" />,
     element: <Departments />,
   },
+  
 ];
 
 export const secondaryRoutes: AppRoute[] = [
