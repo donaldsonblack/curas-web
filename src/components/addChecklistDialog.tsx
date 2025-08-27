@@ -147,23 +147,21 @@ export default function AddChecklistDialog({ onChecklistCreated }: AddChecklistD
         acc[index] = {
           type: q.type,
           question: q.question,
-          options: q.options || [], // Ensure options is always an array
+          options: q.options ? q.options.map(opt => opt.value) : [],
         };
         return acc;
       }, {} as Record<string, any>),
     };
 
     try {
-      await apiFetch(`$${import.meta.env.VITE_API_URL}/checklists`, {
+      await apiFetch(`${import.meta.env.VITE_API_URL}/api/checklists`, {
         method: 'POST',
         body: JSON.stringify(payload),
       });
 
       handleConfetti();
-      setTimeout(() => {
-        setIsOpen(false);
-        onChecklistCreated(); // Trigger refetch
-      }, 1000); // Delay closing the dialog to allow confetti to show
+      setIsOpen(false);
+      onChecklistCreated(); // Trigger refetch
     } catch (error) {
       console.error("Submission failed:", error);
       setSubmissionError("Failed to create checklist. Please try again.");
