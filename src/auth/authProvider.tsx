@@ -3,11 +3,11 @@ import { AuthProvider } from "react-oidc-context";
 
 
 const cognitoAuthConfig = {
-  authority: "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_eGBWCCrnC",
-  client_id: "59n0rkhsdagoehhi3kf8q25t1f",
+	authority: import.meta.env.VITE_COGNITO_AUTHORITY,
+	client_id: import.meta.env.VITE_COGNITO_CLIENT_ID,
   redirect_uri: import.meta.env.VITE_COGNITO_REDIRECT_URI,
-  response_type: "code",
-  scope: "email openid phone profile",
+  response_type: import.meta.env.VITE_COGNITO_RESPONSE_TYPEPE,
+  scope: import.meta.env.VITE_COGNITO_SCOPE,
 };
 
 interface AuthProviderProps {
