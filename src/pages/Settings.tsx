@@ -9,9 +9,9 @@ export default function SettingsPage() {
   const [notifications, setNotifications] = useState(true);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Settings</h1>
-      <div className="space-y-4 max-w-md">
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+      <h1 className="mb-4 text-2xl font-semibold">Settings</h1>
+      <div className="max-w-md space-y-4">
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input

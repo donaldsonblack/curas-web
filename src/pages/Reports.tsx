@@ -20,16 +20,14 @@ const reports = [
 
 export default function Reports() {
   return (
-    <div className="p-6 grid gap-4 sm:grid-cols-2">
+    <div className="container mx-auto grid gap-4 p-4 sm:grid-cols-2 sm:p-6 lg:p-8">
       {reports.map((report) => (
         <Card key={report.id}>
           <CardHeader>
             <CardTitle>{report.title}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              {report.description}
-            </p>
+            <p className="text-sm text-muted-foreground">{report.description}</p>
           </CardContent>
         </Card>
       ))}

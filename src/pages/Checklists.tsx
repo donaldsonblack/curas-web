@@ -67,10 +67,10 @@ export default function Checklists() {
     return (
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         {/* Toolbar Skeleton */}
-        <div className="flex items-center justify-between gap-3 mb-6">
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-10 w-64" />
-            <Skeleton className="h-10 w-[180px]" />
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+            <Skeleton className="h-10 w-full sm:w-64" />
+            <Skeleton className="h-10 w-full sm:w-[180px]" />
           </div>
         </div>
         {/* Grid Skeleton */}
@@ -95,19 +95,19 @@ export default function Checklists() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       {/* Toolbar */}
-      <div className="flex items-center justify-between gap-3 mb-6">
-        <div className="flex items-center gap-2">
-          <div className="relative">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+          <div className="relative flex-1">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search checklists..."
-              className="w-64 pl-9"
+              className="w-full pl-9 sm:w-64"
             />
           </div>
           <Select onValueChange={(value) => setSortBy(value as any)} defaultValue={sortBy}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
             <SelectContent>
