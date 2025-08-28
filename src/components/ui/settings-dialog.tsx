@@ -17,14 +17,14 @@ import {
 } from "lucide-react"
 
 import {
-        Dialog,
-        DialogContent,
-        DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogTrigger,
 } from "./dialog"
 import {
-        Sheet,
-        SheetContent,
-        SheetTrigger,
+	Sheet,
+	SheetContent,
+	SheetTrigger,
 } from "./sheet"
 import { Button } from "./button";
 import { useTheme } from "../../hooks/useTheme";
@@ -51,12 +51,12 @@ interface SettingsDialogProps {
 }
 
 export function SettingsDialog({ children }: SettingsDialogProps) {
-        const [selected, setSelected] = React.useState("messages")
+	const [selected, setSelected] = React.useState("messages")
 
-        const { theme, toggleTheme } = useTheme();
-        const isMobile = useIsMobile();
+	const { theme, toggleTheme } = useTheme();
+	const isMobile = useIsMobile();
 
-        const selectedSection = SECTIONS.find(s => s.key === selected)
+	const selectedSection = SECTIONS.find(s => s.key === selected)
 
 	const SECTION_CONTENT: Record<string, React.ReactNode> = {
 		notifications: <div className="h-40 bg-muted rounded-xl" />, // Placeholder
@@ -81,84 +81,84 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
 		advanced: <div className="h-40 bg-muted rounded-xl" />, // Placeholder
 	}
 
-        const Root = isMobile ? Sheet : Dialog
-        const Trigger = isMobile ? SheetTrigger : DialogTrigger
-        const Content = isMobile ? SheetContent : DialogContent
-        const contentProps = isMobile ? { side: "bottom" as const } : {}
+	const Root = isMobile ? Sheet : Dialog
+	const Trigger = isMobile ? SheetTrigger : DialogTrigger
+	const Content = isMobile ? SheetContent : DialogContent
+	const contentProps = isMobile ? { side: "bottom" as const } : {}
 
-        return (
-                <Root>
-                        <Trigger asChild>{children}</Trigger>
-                        <Content
-                                {...(contentProps as any)}
-                                className={`${isMobile ? 'w-full max-w-full h-[90vh]' : '!max-w-[90vw] !w-[90vw] !sm:max-w-none h-[70vh]'} p-0 overflow-hidden rounded-2xl`}
-                        >
-                                {isMobile ? (
-                                        <div className="flex flex-col h-full w-full bg-background rounded-2xl shadow-lg">
-                                                {/* Top navigation */}
-                                                <aside className="flex overflow-x-auto border-b border-border bg-muted/40 py-4 px-2 gap-1">
-                                                        {SECTIONS.map(section => (
-                                                                <button
-                                                                        key={section.key}
-                                                                        className={`flex flex-col items-center gap-1 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${selected === section.key
-                                                                                ? 'bg-muted text-foreground'
-                                                                                : 'text-muted-foreground hover:bg-muted/50'
-                                                                                }`}
-                                                                        onClick={() => setSelected(section.key)}
-                                                                >
-                                                                        <section.icon className="w-5 h-5" />
-                                                                        <span className="whitespace-nowrap">{section.label}</span>
-                                                                </button>
-                                                        ))}
-                                                </aside>
-                                                {/* Main content */}
-                                                <main className="flex-1 flex flex-col bg-background p-4 overflow-y-auto">
-                                                        <div className="flex items-center gap-2 text-muted-foreground text-sm mb-4">
-                                                                <span className="font-medium text-muted-foreground">Settings</span>
-                                                                <span className="mx-1">&gt;</span>
-                                                                <span className="text-foreground font-medium">{selectedSection?.label}</span>
-                                                        </div>
-                                                        <div className="flex-1 flex flex-col gap-6">
-                                                                {SECTION_CONTENT[selected]}
-                                                                <div className="h-40 bg-muted rounded-xl" />
-                                                        </div>
-                                                </main>
-                                        </div>
-                                ) : (
-                                        <div className="flex h-full w-full bg-background rounded-2xl shadow-lg">
-                                                {/* Sidebar */}
-                                                <aside className="flex-shrink-0" style={{ width: 260 }}>
-                                                        <div className="border-r border-border bg-muted/40 py-6 px-2 flex flex-col gap-1 h-full">
-                                                                {SECTIONS.map(section => (
-                                                                        <button
-                                                                                key={section.key}
-                                                                                className={`flex items-center gap-3 px-4 py-2 rounded-lg text-xs font-medium transition-colors w-full text-left ${selected === section.key
-                                                                                        ? 'bg-muted text-foreground'
-                                                                                        : 'text-muted-foreground hover:bg-muted/50'
-                                                                                        }`}
-                                                                                onClick={() => setSelected(section.key)}
-                                                                        >
-                                                                                <section.icon className="w-5 h-5" />
-                                                                                <span>{section.label}</span>
-                                                                        </button>
-                                                                ))}
-                                                        </div>
-                                                </aside>
-                                                {/* Main content */}
-                                                <main className="flex-1 flex flex-col bg-background p-8" style={{ flexBasis: '82%' }}>
-                                                        <div className="flex items-center gap-2 text-muted-foreground text-sm mb-6">
-                                                                <span className="font-medium text-muted-foreground">Settings</span>
-                                                                <span className="mx-1">&gt;</span>
-                                                                <span className="text-foreground font-medium">{selectedSection?.label}</span>
-                                                        </div>
-                                                        <div className="flex-1 flex flex-col gap-6">
-                                                                {SECTION_CONTENT[selected]}
-                                                                <div className="h-40 bg-muted rounded-xl" />
-                                                        </div>
-                                                </main>
-                                        </div>
-                                )}
-                        </Content>
-                </Root>
-        )
+	return (
+		<Root>
+			<Trigger asChild>{children}</Trigger>
+			<Content
+				{...(contentProps as any)}
+				className={`${isMobile ? 'w-full max-w-full h-[90vh]' : '!max-w-[90vw] !w-[90vw] !sm:max-w-none h-[70vh]'} p-0 overflow-hidden rounded-2xl`}
+			>
+				{isMobile ? (
+					<div className="flex flex-col h-full w-full bg-background rounded-2xl shadow-lg">
+						{/* Top navigation */}
+						<aside className="flex overflow-x-auto border-b border-border bg-muted/40 py-4 px-2 gap-1">
+							{SECTIONS.map(section => (
+								<button
+									key={section.key}
+									className={`flex flex-col items-center gap-1 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${selected === section.key
+										? 'bg-muted text-foreground'
+										: 'text-muted-foreground hover:bg-muted/50'
+										}`}
+									onClick={() => setSelected(section.key)}
+								>
+									<section.icon className="w-5 h-5" />
+									<span className="whitespace-nowrap">{section.label}</span>
+								</button>
+							))}
+						</aside>
+						{/* Main content */}
+						<main className="flex-1 flex flex-col bg-background p-4 overflow-y-auto">
+							<div className="flex items-center gap-2 text-muted-foreground text-sm mb-4">
+								<span className="font-medium text-muted-foreground">Settings</span>
+								<span className="mx-1">&gt;</span>
+								<span className="text-foreground font-medium">{selectedSection?.label}</span>
+							</div>
+							<div className="flex-1 flex flex-col gap-6">
+								{SECTION_CONTENT[selected]}
+								<div className="h-40 bg-muted rounded-xl" />
+							</div>
+						</main>
+					</div>
+				) : (
+					<div className="flex h-full w-full bg-background rounded-2xl shadow-lg">
+						{/* Sidebar */}
+						<aside className="flex-shrink-0" style={{ width: 260 }}>
+							<div className="border-r border-border bg-muted/40 py-6 px-2 flex flex-col gap-1 h-full">
+								{SECTIONS.map(section => (
+									<button
+										key={section.key}
+										className={`flex items-center gap-3 px-4 py-2 rounded-lg text-xs font-medium transition-colors w-full text-left ${selected === section.key
+											? 'bg-muted text-foreground'
+											: 'text-muted-foreground hover:bg-muted/50'
+											}`}
+										onClick={() => setSelected(section.key)}
+									>
+										<section.icon className="w-5 h-5" />
+										<span>{section.label}</span>
+									</button>
+								))}
+							</div>
+						</aside>
+						{/* Main content */}
+						<main className="flex-1 flex flex-col bg-background p-8" style={{ flexBasis: '82%' }}>
+							<div className="flex items-center gap-2 text-muted-foreground text-sm mb-6">
+								<span className="font-medium text-muted-foreground">Settings</span>
+								<span className="mx-1">&gt;</span>
+								<span className="text-foreground font-medium">{selectedSection?.label}</span>
+							</div>
+							<div className="flex-1 flex flex-col gap-6">
+								{SECTION_CONTENT[selected]}
+								<div className="h-40 bg-muted rounded-xl" />
+							</div>
+						</main>
+					</div>
+				)}
+			</Content>
+		</Root>
+	)
 }
