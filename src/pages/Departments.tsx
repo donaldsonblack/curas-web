@@ -16,25 +16,27 @@ const departments = [
 
 export default function Departments() {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Departments</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Manager</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {departments.map((dept) => (
-            <TableRow key={dept.name}>
-              <TableCell>{dept.name}</TableCell>
-              <TableCell>{dept.manager}</TableCell>
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+      <h1 className="mb-4 text-2xl font-semibold">Departments</h1>
+      <div className="overflow-x-auto">
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Manager</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableCaption>A list of company departments.</TableCaption>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {departments.map((dept) => (
+              <TableRow key={dept.name}>
+                <TableCell>{dept.name}</TableCell>
+                <TableCell>{dept.manager}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableCaption>A list of company departments.</TableCaption>
+        </Table>
+      </div>
     </div>
   );
 }

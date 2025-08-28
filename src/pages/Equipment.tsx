@@ -16,27 +16,29 @@ const equipment = [
 
 export default function Equipment() {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Equipment</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Model</TableHead>
-            <TableHead>Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {equipment.map((item) => (
-            <TableRow key={item.model}>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>{item.model}</TableCell>
-              <TableCell>{item.status}</TableCell>
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+      <h1 className="mb-4 text-2xl font-semibold">Equipment</h1>
+      <div className="overflow-x-auto">
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Model</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableCaption>A list of equipment in the system.</TableCaption>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {equipment.map((item) => (
+              <TableRow key={item.model}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.model}</TableCell>
+                <TableCell>{item.status}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableCaption>A list of equipment in the system.</TableCaption>
+        </Table>
+      </div>
     </div>
   );
 }
