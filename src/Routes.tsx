@@ -17,6 +17,7 @@ import UsersPage from "./pages/Users";
 import Logs from "./pages/Logs";
 import Reports from "./pages/Reports";
 import EditChecklist from "./pages/checklists/EditChecklist";
+import SettingsPage from "./pages/Settings";
 
 export type AppRoute = {
 	path: string;
@@ -77,13 +78,13 @@ export const secondaryRoutes: AppRoute[] = [
 		element: <Reports />,
 		requiresAdmin: true,
 	},
-	{
-		path: "/settings",
-		label: "Settings",
-		icon: <Settings className="w-4 h-4" />,
-		requiresAdmin: true,
-		type: "dialog",
-	},
+        {
+                path: "/settings",
+                label: "Settings",
+                icon: <Settings className="w-4 h-4" />,
+                element: <SettingsPage />,
+                requiresAdmin: true,
+        },
 ];
 
 export const hiddenRoutes: AppRoute[] = [

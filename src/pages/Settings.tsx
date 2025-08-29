@@ -21,7 +21,7 @@ export default function SettingsPage() {
             placeholder="you@example.com"
           />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-0.5">
             <Label htmlFor="notifications">Notifications</Label>
             <p className="text-sm text-muted-foreground">
@@ -32,6 +32,7 @@ export default function SettingsPage() {
             id="notifications"
             checked={notifications}
             onCheckedChange={setNotifications}
+            className="sm:ml-4"
           />
         </div>
         <Button type="button">Save settings</Button>
