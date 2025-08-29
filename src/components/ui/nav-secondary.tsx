@@ -11,7 +11,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from './sidebar'
-import { SettingsDialog } from "./settings-dialog";
 
 export function NavSecondary(props: React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   return (
@@ -21,23 +20,12 @@ export function NavSecondary(props: React.ComponentPropsWithoutRef<typeof Sideba
         <SidebarMenu>
           {secondaryRoutes.map((route) => (
             <SidebarMenuItem key={route.path}>
-              {route.label === "Settings" ? (
-                <SettingsDialog>
-                  <SidebarMenuButton asChild tooltip={route.label}>
-                    <button className="flex items-center gap-2">
-                      {route.icon}
-                      <span>{route.label}</span>
-                    </button>
-                  </SidebarMenuButton>
-                </SettingsDialog>
-              ) : (
-                <SidebarMenuButton asChild tooltip={route.label}>
-                  <Link to={route.path} className="flex items-center gap-2">
-                    {route.icon}
-                    <span>{route.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              )}
+              <SidebarMenuButton asChild tooltip={route.label}>
+                <Link to={route.path} className="flex items-center gap-2">
+                  {route.icon}
+                  <span>{route.label}</span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
