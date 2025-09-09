@@ -13,12 +13,10 @@ import {
 } from "../components/ui/select";
 import { Search } from "lucide-react";
 import { useChecklistTableData } from "../hooks/checklists/useChecklistTableData";
-import ChecklistCardSkeleton from "../components/checklists/ChecklistCardSkeleton";
-import { Skeleton } from "../components/ui/skeleton";
 
 
 export default function Checklists() {
-  const { data, loading, error, refetch } = useChecklistTableData();
+  const { data, error, refetch } = useChecklistTableData();
   const isAdmin = useAdmin();
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<"title" | "name">("title");
@@ -63,28 +61,6 @@ export default function Checklists() {
     return sorted;
   }, [query, sortBy, items]);
   
-  if (loading && !data?.length) {
-    return (
-      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        {/* Toolbar Skeleton */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
-            <Skeleton className="h-10 w-full sm:w-64" />
-            <Skeleton className="h-10 w-full sm:w-[180px]" />
-          </div>
-        </div>
-        {/* Grid Skeleton */}
-        <div
-          className="grid gap-4"
-          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(16rem, 1fr))" }}
-        >
-          {Array.from({ length: 6 }).map((_, index) => (
-            <ChecklistCardSkeleton key={index} />
-          ))}
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
