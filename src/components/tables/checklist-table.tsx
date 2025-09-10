@@ -8,7 +8,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "../ui/table"
-import { useChecklistTableData } from "../../hooks/useChecklistTableData"
+import { useChecklistTableData } from "../../hooks/checklists/useChecklistTableData"
 export function ChecklistTable() {
 	const { data, loading, error } = useChecklistTableData()
 	return (

@@ -1,4 +1,4 @@
-// src/hooks/useTheme.ts
+// src/hooks/general/useTheme.ts
 import { useEffect, useState } from "react";
 
 export function useTheme() {

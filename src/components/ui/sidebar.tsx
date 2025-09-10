@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { PanelLeftIcon } from "lucide-react"
 
-import { useIsMobile } from "../../hooks/useMobile"
+import { useIsMobile } from "../../hooks/general/useMobile"
 import { cn } from "../../libs/utils"
 import { Button } from "./button"
 import { Input } from "./input"

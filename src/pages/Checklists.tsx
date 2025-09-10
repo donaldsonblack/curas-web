@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import AddChecklistDialog from "../components/addChecklistDialog";
-import { useAdmin } from "../hooks/useAdmin";
+import { useAdmin } from "../hooks/general/useAdmin";
 import type { ChecklistItem } from "../components/checklistCardHandler";
 import ChecklistCardHandler from "../components/checklistCardHandler";
 import { Input } from "../components/ui/input";
@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { Search } from "lucide-react";
-import { useChecklistTableData } from "../hooks/useChecklistTableData";
+import { useChecklistTableData } from "../hooks/checklists/useChecklistTableData";
 import ChecklistCardSkeleton from "../components/checklistCardSkeleton";
 import { Skeleton } from "../components/ui/skeleton";
 

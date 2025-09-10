@@ -1,5 +1,5 @@
 import { type ColumnDef } from "@tanstack/react-table"
-import { useUsersTableData, type User } from "../../hooks/useUsersTableData"
+import { useUsersTableData, type User } from "../../hooks/users/useUsersTableData"
 import { DataTable } from "../ui/data-table"
 import { Checkbox } from "@/components/ui/checkbox"
 
