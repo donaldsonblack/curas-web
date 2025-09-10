@@ -1,57 +1,116 @@
-Curas Server – Backend Overview for Front-End Developers
+Curas Server – Backend Context for Front-End Developers
+=======================================================
 
 Project Overview
 ----------------
-Curas Server is a Spring Boot (Java 21) application that exposes REST APIs for a medical equipment maintenance platform. It uses PostgreSQL with JPA/Hibernate and is built with Gradle.
+Curas Server is a Spring Boot 3 (Java 21) application that powers the Curas medical equipment maintenance platform. It exposes JSON REST APIs backed by PostgreSQL through JPA/Hibernate and is built with Gradle. OpenAPI/Swagger documentation is available at `/docs` when the server is running.
 
-Running
--------
-./gradlew bootRun          # start the server
-./gradlew test             # run test suite
+Running Locally
+---------------
+./gradlew bootRun      # start the server on http://localhost:8080
+./gradlew test         # run unit/integration tests
+./gradlew build        # compile and package
 
-API Endpoints
--------------
-Base URL: /api
+Useful environment variables (see `src/main/resources/application-dev.properties`):
+- `CURA_URL` – base URL used in generated links
+- `AWS_*` variables – Cognito and RDS configuration
+- `AUTH_REDIRECT_URI` – redirect URI used during OAuth flows
 
-Equipment (/api/equipment)
-- GET /api/equipment           paginated list of equipment
-- GET /api/equipment/{id}      get single equipment
-- POST /api/equipment          create or update equipment
-
-Department (/api/department)
-- GET /api/department          list departments
-- POST /api/department         create department
-- DELETE /api/department/{id}  remove department
-
-Checklists (/api/checklists)
-- GET /api/checklists                full checklists (includes questions)
-- GET /api/checklists/list           lightweight list; optional departmentId
-- GET /api/checklists/search?q=      search by text; optional departmentId
-- GET /api/checklists/{id}           get single checklist
-- POST /api/checklists               create or update checklist
-- DELETE /api/checklists/{id}        delete checklist
-
-Utility
-- GET /api/endpoints      returns all registered endpoints
-- GET /me                 returns JWT claims for current user
-- GET /hello              simple greeting/health check
-
-Data Model Highlights
----------------------
-Equipment: id, departmentId, serial, model, name
-Department: id, name, hierarchical parent/children
-Checklist: id, name, description, type, departmentId, equipmentId, authorId, created, questions (JSONB)
-Record: id, checklistId, authorId, created, answers (JSONB)
+API Conventions
+---------------
+- Base URL for all APIs: `/api`
+- All responses are JSON. Collections use Spring's `Page<T>` wrapper with `page`, `size`, and `sort` query parameters
+- Standard HTTP status codes: 200 for success, 201 for creation, 204 for empty deletes
+- Errors follow Spring Boot's default format: `{"timestamp":..., "status":400, "error":..., "path":"/api/..."}`
 
 Authentication
 --------------
-The server is configured for JWT-based authentication using AWS Cognito. Current security filters and configs are largely commented out for development.
+JWT-based authentication is wired using AWS Cognito. Client requests should include an `Authorization: Bearer <token>` header. Security filters are currently relaxed for development, but front-end code should be prepared to supply tokens.
 
-Configuration
--------------
-Key properties live in src/main/resources/application.properties and application-dev.properties, which set the active profile, Swagger/OpenAPI paths, and AWS & database settings.
+Domain APIs
+-----------
+### Equipment `/api/equipment`
+Fields: `id`, `departmentId`, `serial`, `model`, `name`
 
-Utilities
----------
-- Database schema scripts in src/main/resources/sql/schema.sql
-- /api/endpoints can be used to inspect available routes at runtime.
+- `GET /api/equipment`
+  Returns a paginated list of equipment.
+  Example response item:
+  ```
+  {
+    "id": 1,
+    "departmentId": 3,
+    "serial": "SN-001",
+    "model": "Philips X200",
+    "name": "X-Ray Machine"
+  }
+  ```
+
+- `GET /api/equipment/{id}`
+  Returns a single equipment record.
+
+- `POST /api/equipment`
+  Creates or updates equipment. Provide JSON body as above. Responds with the saved entity.
+
+### Department `/api/department`
+Fields: `id`, `name`, optional `parentId`
+
+- `GET /api/department`
+  Paginated list of departments.
+
+- `POST /api/department`
+  Create or update a department:
+  ```
+  { "name": "Radiology", "parentId": null }
+  ```
+
+- `DELETE /api/department/{id}`
+  Remove a department and cascade to its children.
+
+### Checklists `/api/checklists`
+Full entity fields: `id`, `name`, `description`, `type`, `departmentId`, `equipmentId`, `authorId`, `created`, `questions` (JSONB)
+
+- `GET /api/checklists`
+  Paginated list of checklists including `questions`.
+
+- `GET /api/checklists/list?departmentId=`
+  Lightweight list excluding `questions`. Response items contain: `id`, `name`, `description`, `type`, `created`, `departmentId`, `equipmentId`, `authorId`.
+
+- `GET /api/checklists/search?q=&departmentId=`
+  Search by text in `name`, `description`, or `type`; optional department filter.
+
+- `GET /api/checklists/{id}`
+  Retrieve a full checklist.
+
+- `POST /api/checklists`
+  Create or update a checklist. `questions` should be an array of objects; see server tests for structure.
+
+- `DELETE /api/checklists/{id}`
+  Delete a checklist.
+
+### Utility
+- `GET /api/endpoints` – lists all registered routes
+  ```
+  [{ "method": "GET", "path": "/api/equipment", "handler": "EquipmentController#getAll" }, ...]
+  ```
+- `GET /me` – echoes JWT claims for the current user
+- `GET /hello` – simple health check returning "Hello from server"
+
+Data Model Summary
+------------------
+Equipment
+: `id`, `departmentId`, `serial`, `model`, `name`
+
+Department
+: `id`, `name`, `parent` (optional), `children[]`
+
+Checklist
+: `id`, `name`, `description`, `type`, `departmentId`, `equipmentId`, `authorId`, `created`, `questions` (JSONB)
+
+Record (not yet exposed via API)
+: `id`, `checklistId`, `authorId`, `created`, `answers` (JSONB)
+
+Notes
+-----
+- SQL schema files live under `src/main/resources/sql/schema.sql`.
+- The `/api/endpoints` route is useful for exploring the API surface while the server is running.
+- Swagger UI at `/docs` mirrors the definitions above and can be used for manual exploration.
