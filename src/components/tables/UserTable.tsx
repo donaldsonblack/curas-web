@@ -1,6 +1,6 @@
 import { type ColumnDef } from "@tanstack/react-table"
-import { useUsersTableData, type User } from "../../hooks/useUsersTableData"
-import { DataTable } from "../ui/data-table"
+import { useUsersTableData, type User } from "@/hooks/useUsersTableData"
+import { DataTable } from "@/components/ui/data-table"
 import { Checkbox } from "@/components/ui/checkbox"
 
 export const columns: ColumnDef<User>[] = [

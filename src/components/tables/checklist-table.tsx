@@ -1,4 +1,4 @@
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import { Link2, Trash2, Pencil } from "lucide-react"
 import {
 	Table,
@@ -7,8 +7,8 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "../ui/table"
-import { useChecklistTableData } from "../../hooks/useChecklistTableData"
+} from "@/components/ui/table"
+import { useChecklistTableData } from "@/hooks/useChecklistTableData"
 export function ChecklistTable() {
 	const { data, loading, error } = useChecklistTableData()
 	return (

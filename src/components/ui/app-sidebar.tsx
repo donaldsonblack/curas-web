@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 // Commented out import, causing errors in build
-//import { NavDocuments } from '@/components/ui/nav-documents'
+// import { NavDocuments } from "@/components/ui/nav-documents"
 import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
 import { NavUser } from "./nav-user";

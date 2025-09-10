@@ -27,7 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useApi } from "../auth/useAuth";
+import { useApi } from "@/auth/useAuth";
 
 interface Department {
   id: number;

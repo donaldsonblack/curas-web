@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuth } from "react-oidc-context";
-import { signoutRedirect } from "../../auth/useAuth";
+import { signoutRedirect } from "@/auth/useAuth";
 
 import {
   BellIcon,

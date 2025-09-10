@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useApi } from "../auth/useAuth"
+import { useApi } from "@/auth/useAuth"
 
 export interface User {
   id: number;

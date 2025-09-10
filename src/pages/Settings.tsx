@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Label } from "../components/ui/label";
-import { Input } from "../components/ui/input";
-import { Switch } from "../components/ui/switch";
-import { Button } from "../components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
 export default function SettingsPage() {
   const [email, setEmail] = useState("");

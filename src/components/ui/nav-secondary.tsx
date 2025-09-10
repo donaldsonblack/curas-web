@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Link } from "react-router-dom"
-import { secondaryRoutes } from "../../Routes"
+import { secondaryRoutes } from "@/Routes"
 import {
   SidebarGroup,
   SidebarGroupContent,

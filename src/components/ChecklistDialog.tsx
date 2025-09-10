@@ -1,7 +1,7 @@
 // FOR ENTERING A NEW CHECKLIST
 
 import { useState } from "react";
-import { useApi } from "../auth/useAuth";
+import { useApi } from "@/auth/useAuth";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import {

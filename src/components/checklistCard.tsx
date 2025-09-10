@@ -35,7 +35,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./ui/alert-dialog";
-import { useApi } from "../auth/useAuth";
+import { useApi } from "@/auth/useAuth";
 
 export default function ChecklistCard({ id, title, description, questions }: checklistCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

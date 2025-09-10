@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom"
-import { AppSidebar } from "../ui/app-sidebar"
-import { SiteHeader } from "../ui/site-header"
+import { AppSidebar } from "@/components/ui/app-sidebar"
+import { SiteHeader } from "@/components/ui/site-header"
 import {
   SidebarInset,
   SidebarProvider,
-} from "../ui/sidebar"
+} from "@/components/ui/sidebar"
 
 export default function AppShell() {
   return (

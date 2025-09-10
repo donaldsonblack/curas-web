@@ -6,7 +6,7 @@ import {
   TableBody,
   TableCell,
   TableCaption,
-} from "../components/ui/table";
+} from "@/components/ui/table";
 
 const equipment = [
   { name: "Forklift", model: "FL100", status: "Active" },

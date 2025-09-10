@@ -4,17 +4,17 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "../components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
-import { Button } from "../components/ui/button";
+} from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import {
   Wrench,
   ClipboardCheck,
   CheckCircle,
   Bell,
 } from "lucide-react";
-import { Overview } from "../components/dashboard/overview";
-import { RecentActivity } from "../components/dashboard/recent-activity";
+import { Overview } from "@/components/dashboard/overview";
+import { RecentActivity } from "@/components/dashboard/recent-activity";
 
 export default function Dashboard() {
   return (

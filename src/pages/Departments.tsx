@@ -6,7 +6,7 @@ import {
   TableBody,
   TableCell,
   TableCaption,
-} from "../components/ui/table";
+} from "@/components/ui/table";
 
 const departments = [
   { name: "Maintenance", manager: "Alice Johnson" },
