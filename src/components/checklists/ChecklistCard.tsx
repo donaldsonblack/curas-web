@@ -13,9 +13,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { ChecklistDialog } from "./ChecklistDialog";
 import {
   DropdownMenu,
@@ -23,7 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import { MoreVertical } from "lucide-react";
 import {
   AlertDialog,
@@ -34,8 +34,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "./ui/alert-dialog";
-import { useApi } from "../auth/useAuth";
+} from "../ui/alert-dialog";
+import { useApi } from "../../auth/useAuth";
 
 export default function ChecklistCard({ id, title, description, questions }: checklistCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

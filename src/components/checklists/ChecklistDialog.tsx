@@ -1,9 +1,9 @@
 // FOR ENTERING A NEW CHECKLIST
 
 import { useState } from "react";
-import { useApi } from "../auth/useAuth";
-import { Button } from "./ui/button";
-import { Card, CardContent } from "./ui/card";
+import { useApi } from "../../auth/useAuth";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
 import {
   Dialog,
   DialogContent,
@@ -11,11 +11,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
-import { Checkbox } from "./ui/checkbox";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Textarea } from "./ui/textarea";
+} from "../ui/dialog";
+import { Checkbox } from "../ui/checkbox";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 // Define the structure of a single checklist item/question
 interface ChecklistItem {
