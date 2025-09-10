@@ -1,16 +1,16 @@
 // import { useSortable } from "@dnd-kit/sortable";
 // import { CSS } from "@dnd-kit/utilities";
 // import { GripVertical, PlusCircle, Trash2 } from "lucide-react";
-// // import { Question, QuestionType } from "./addChecklistDialog";
-// import { Button } from "./ui/button";
-// import { Input } from "./ui/input";
+// // import { Question, QuestionType } from "./AddChecklistDialog";
+// import { Button } from "../ui/button";
+// import { Input } from "../ui/input";
 // import {
 //   Select,
 //   SelectContent,
 //   SelectItem,
 //   SelectTrigger,
 //   SelectValue,
-// } from "./ui/select";
+// } from "../ui/select";
 //
 // interface SortableQuestionItemProps {
 //   question: Question;

@@ -1,4 +1,4 @@
-import ChecklistCard, { type checklistCardProps } from "./checklistCard";
+import ChecklistCard, { type checklistCardProps } from "./ChecklistCard";
 
 // This is the shape of the data that the ChecklistCard component expects.
 // It's also the shape of the data that this handler receives.
