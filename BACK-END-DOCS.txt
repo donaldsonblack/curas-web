@@ -1,0 +1,57 @@
+Curas Server – Backend Overview for Front-End Developers
+
+Project Overview
+----------------
+Curas Server is a Spring Boot (Java 21) application that exposes REST APIs for a medical equipment maintenance platform. It uses PostgreSQL with JPA/Hibernate and is built with Gradle.
+
+Running
+-------
+./gradlew bootRun          # start the server
+./gradlew test             # run test suite
+
+API Endpoints
+-------------
+Base URL: /api
+
+Equipment (/api/equipment)
+- GET /api/equipment           paginated list of equipment
+- GET /api/equipment/{id}      get single equipment
+- POST /api/equipment          create or update equipment
+
+Department (/api/department)
+- GET /api/department          list departments
+- POST /api/department         create department
+- DELETE /api/department/{id}  remove department
+
+Checklists (/api/checklists)
+- GET /api/checklists                full checklists (includes questions)
+- GET /api/checklists/list           lightweight list; optional departmentId
+- GET /api/checklists/search?q=      search by text; optional departmentId
+- GET /api/checklists/{id}           get single checklist
+- POST /api/checklists               create or update checklist
+- DELETE /api/checklists/{id}        delete checklist
+
+Utility
+- GET /api/endpoints      returns all registered endpoints
+- GET /me                 returns JWT claims for current user
+- GET /hello              simple greeting/health check
+
+Data Model Highlights
+---------------------
+Equipment: id, departmentId, serial, model, name
+Department: id, name, hierarchical parent/children
+Checklist: id, name, description, type, departmentId, equipmentId, authorId, created, questions (JSONB)
+Record: id, checklistId, authorId, created, answers (JSONB)
+
+Authentication
+--------------
+The server is configured for JWT-based authentication using AWS Cognito. Current security filters and configs are largely commented out for development.
+
+Configuration
+-------------
+Key properties live in src/main/resources/application.properties and application-dev.properties, which set the active profile, Swagger/OpenAPI paths, and AWS & database settings.
+
+Utilities
+---------
+- Database schema scripts in src/main/resources/sql/schema.sql
+- /api/endpoints can be used to inspect available routes at runtime.
