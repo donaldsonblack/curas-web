@@ -14,7 +14,7 @@ export default function AppShell() {
         <SidebarInset>
           <SiteHeader />
           <Outlet /> {/* This renders the nested route components like Home or Info */}
-        </SidebarInset>
+        </SidebarInset> 
       </SidebarProvider>
     </>
   )

@@ -20,13 +20,6 @@ import {
 import { Link } from "react-router-dom";
 
 
-const data = {
-  user: {
-    name: "Name",
-    email: "Email",
-    avatar: "PF",
-  },
-};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -60,7 +53,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {/* FOOTER */}
 
       <SidebarFooter>
-        <NavUser user={data.user} />             
+        <NavUser/>             
       </SidebarFooter>
     </Sidebar>
   );
