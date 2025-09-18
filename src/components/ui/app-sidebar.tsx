@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  ClipboardPlus,
-} from "lucide-react";
+import { ClipboardPlus } from "lucide-react";
 
 // Commented out import, causing errors in build
 //import { NavDocuments } from '@/components/ui/nav-documents'
@@ -33,6 +31,9 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
+
+      {/* HEADER */}
+
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -48,12 +49,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
+      {/* CONTENT */} 
+
       <SidebarContent>
-        <NavMain />
-        <NavSecondary className="mt-auto" />
+        <NavMain />                             {/* Primary Routes */}
+        <NavSecondary className="mt-auto" />    {/* Secondary Routes */}
       </SidebarContent>
+
+      {/* FOOTER */}
+
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={data.user} />             
       </SidebarFooter>
     </Sidebar>
   );

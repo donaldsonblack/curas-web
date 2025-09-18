@@ -16,7 +16,6 @@ import Departments from "./pages/Departments";
 import UsersPage from "./pages/Users";
 import Logs from "./pages/Logs";
 import Reports from "./pages/Reports";
-import EditChecklist from "./pages/checklists/EditChecklist";
 import SettingsPage from "./pages/Settings";
 
 export type AppRoute = {
@@ -89,8 +88,8 @@ export const secondaryRoutes: AppRoute[] = [
 
 export const hiddenRoutes: AppRoute[] = [
 	{
-		path: "/checklists/edit",
-		element: <EditChecklist />,
+		path: "/hidden",
+		element: <>HIDDEN</>,
 	}
 ]
 
