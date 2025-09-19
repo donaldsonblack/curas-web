@@ -1,4 +1,3 @@
-
 export default function Equipment() {
   return (
     <div>
@@ -6,4 +5,3 @@ export default function Equipment() {
     </div>
   );
 }
-

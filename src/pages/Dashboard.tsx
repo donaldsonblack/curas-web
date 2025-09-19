@@ -1,5 +1,3 @@
-import { Card } from "@/components/ui/card";
-
 export default function Dashboard() {
   return (
     <>
@@ -8,6 +6,10 @@ export default function Dashboard() {
           <div className="w-full sm:w-[32%] bg-gray-200 p-4">Card 1</div>
           <div className="w-full sm:w-[32%] bg-gray-200 p-4">Card 2</div>
           <div className="w-full sm:w-[32%] bg-gray-200 p-4">Card 3</div>
+        </div>
+        
+        <div className="">
+          <div className=""></div>
         </div>
       </div>
     </>
