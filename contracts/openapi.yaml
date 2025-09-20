@@ -1,0 +1,423 @@
+openapi: 3.1.0
+info:
+  title: Curas Medical CMMS API
+  version: 0.1.0
+  description: API for the Curas MVP, a mobile-first PWA for managing medical equipment checks.
+
+servers:
+  - url: /api
+
+paths:
+  /auth/login:
+    post:
+      summary: Login (stub)
+      tags:
+        - Auth
+      description: MVP stub for username/password login flow, delegating to Cognito.
+      responses:
+        '200':
+          description: Successful login
+  /me:
+    get:
+      summary: Get Current User
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /wards:
+    get:
+      summary: List Wards
+      tags:
+        - Wards
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of wards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ward'
+
+  /assets:
+    get:
+      summary: List and Search Assets
+      tags:
+        - Assets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: wardId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of assets
+
+  /assets/{assetId}:
+    get:
+      summary: Get Asset by ID
+      tags:
+        - Assets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: assetId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Asset details
+
+  /checklist-templates:
+    get:
+      summary: List Checklist Templates
+      tags:
+        - Checklists
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: wardId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of checklist templates
+
+  /checklist-templates/{id}:
+    get:
+      summary: Get Checklist Template by ID
+      tags:
+        - Checklists
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Checklist template details
+
+  /checklist-instances:
+    post:
+      summary: Open a new Checklist Instance
+      tags:
+        - Checklists
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Checklist instance created
+
+  /checklist-instances/{id}:
+    get:
+      summary: Get a Checklist Instance
+      tags:
+        - Checklists
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Checklist instance details
+
+  /checklist-instances/{id}/responses:
+    post:
+      summary: Bulk upsert responses for a checklist
+      tags:
+        - Checklists
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Responses saved
+
+  /checklist-instances/{id}/submit:
+    post:
+      summary: Submit a completed checklist
+      tags:
+        - Checklists
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Checklist submitted
+
+  /issues:
+    get:
+      summary: List and Filter Issues
+      tags:
+        - Issues
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: wardId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: severity
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of issues
+    post:
+      summary: Create a new Issue
+      tags:
+        - Issues
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Issue created
+
+  /issues/{id}:
+    patch:
+      summary: Update Issue Status
+      tags:
+        - Issues
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Issue status updated
+
+  /dashboard/ward/{wardId}/today:
+    get:
+      summary: Get Today's Ward Dashboard
+      tags:
+        - Dashboard
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: wardId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Today's dashboard metrics
+
+  /activity:
+    get:
+      summary: Get Ward Activity Log
+      tags:
+        - Activity
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: wardId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of activity events
+
+  /attachments/presign:
+    post:
+      summary: Get a presigned URL for S3 upload
+      tags:
+        - Attachments
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Presigned URL created
+
+  /export/ward/{wardId}/audit.csv:
+    get:
+      summary: Export Ward Audit Log as CSV
+      tags:
+        - Export
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: wardId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: CSV file stream
+          content:
+            text/csv:
+              schema:
+                type: string
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Ward:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: string, format: email }
+        role: { type: string, enum: [NURSE, NUM] }
+        displayName: { type: string }
+
+    Asset:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        assetTag: { type: string }
+        type: { type: string }
+        location: { type: string }
+        wardId: { type: string, format: uuid }
+        critical: { type: boolean }
+        status: { type: string, enum: [AVAILABLE, FAULTED, OOS] }
+        qrCode: { type: string }
+
+    ChecklistTemplate:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        description: { type: string }
+        wardIds: { type: array, items: { type: string, format: uuid } }
+        items: { type: array, items: { $ref: '#/components/schemas/ChecklistTemplateItem' } }
+
+    ChecklistTemplateItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        label: { type: string }
+        helpText: { type: string }
+        required: { type: boolean }
+        type: { type: string, enum: [YNN] }
+        mediaUrl: { type: string, format: uri }
+
+    ChecklistInstance:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        templateId: { type: string, format: uuid }
+        wardId: { type: string, format: uuid }
+        openedByUserId: { type: string, format: uuid }
+        openedAt: { type: string, format: date-time }
+        submittedByUserId: { type: string, format: uuid }
+        submittedAt: { type: string, format: date-time }
+        status: { type: string, enum: [OPEN, SUBMITTED, ABANDONED] }
+
+    ChecklistResponse:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        instanceId: { type: string, format: uuid }
+        templateItemId: { type: string, format: uuid }
+        value: { type: string, enum: [YES, NO, NA] }
+        note: { type: string }
+        photoUrl: { type: string, format: uri }
+
+    Issue:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        assetId: { type: string, format: uuid }
+        reportedByUserId: { type: string, format: uuid }
+        reportedAt: { type: string, format: date-time }
+        severity: { type: string, enum: [LOW, MEDIUM, HIGH, CRITICAL] }
+        symptom: { type: string }
+        photoUrl: { type: string, format: uri }
+        status: { type: string, enum: [OPEN, TRIAGED, IN_PROGRESS, RESOLVED] }
+        triagedAt: { type: string, format: date-time }
+        resolvedAt: { type: string, format: date-time }
+        resolutionNote: { type: string }
+
+    ActivityEvent:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        occurredAt: { type: string, format: date-time }
+        actorUserId: { type: string, format: uuid }
+        type: { type: string }
+        entityType: { type: string }
+        entityId: { type: string }
+        payload: { type: object }
+        requestId: { type: string, format: uuid }
+
+    Attachment:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        url: { type: string, format: uri }
+        type: { type: string }
+        createdByUserId: { type: string, format: uuid }
+        createdAt: { type: string, format: date-time }
+        checksum: { type: string }
+
+    Error:
+      type: object
+      description: RFC 7807 Problem Details
+      properties:
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string, format: uri }

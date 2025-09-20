@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "bmad-method": "^4.43.1"
+  },
+  "_npx": {
+    "packages": [
+      "bmad-method"
+    ]
+  }
+}

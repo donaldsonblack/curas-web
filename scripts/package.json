@@ -1,0 +1,20 @@
+{
+  "name": "curas-scripts",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Seeding and utility scripts for the Curas project.",
+  "main": "seed-assets.ts",
+  "scripts": {
+    "seed": "ts-node seed-assets.ts"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "qrcode": "^1.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.2",
+    "@types/qrcode": "^1.5.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  }
+}

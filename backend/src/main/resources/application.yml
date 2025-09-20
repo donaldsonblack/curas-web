@@ -1,0 +1,37 @@
+# Server Configuration
+server:
+  port: 8080
+
+# Spring Application Configuration
+spring:
+  application:
+    name: curas-web
+
+  # Datasource Configuration (PostgreSQL)
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:curas_dev}
+    username: ${DB_USER:curas}
+    password: ${DB_PASSWORD:localdev}
+    driver-class-name: org.postgresql.Driver
+
+  # JPA/Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate # Use Flyway for schema management, so Hibernate should only validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+# OpenAPI Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

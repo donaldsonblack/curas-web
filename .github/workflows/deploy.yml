@@ -1,0 +1,85 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-infra:
+    name: Deploy Infrastructure
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./infra
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ./infra
+
+      # Manual approval step would be configured in the environment settings
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./infra
+
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    needs: deploy-infra
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        # ... (credentials setup) ...
+
+      - name: Set up JDK 21
+        # ... (java setup) ...
+
+      - name: Build and Push Docker Image
+        # This would involve logging into ECR, building the image, and pushing it
+        run: echo "TODO - Build and push backend Docker image to ECR"
+
+      - name: Update ECS Service
+        # This would force a new deployment of the Fargate service with the new image
+        run: echo "TODO - Update ECS service to trigger deployment"
+
+  deploy-frontend:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    needs: deploy-infra
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        # ... (credentials setup) ...
+
+      - name: Build Frontend
+        # ... (node setup, npm ci, npm run build) ...
+        run: echo "TODO - Build frontend static assets"
+
+      - name: Sync to S3
+        # This would sync the 'dist' directory to the S3 bucket for static hosting
+        run: echo "TODO - Sync build output to S3"
+
+      - name: Invalidate CloudFront Cache
+        # This ensures users get the latest version of the PWA
+        run: echo "TODO - Invalidate CloudFront distribution"
