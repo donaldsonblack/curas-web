@@ -22,13 +22,6 @@ export function NavMain() {
           {/* <SearchForm className="my-2" /> */}
           <SidebarMenu>
             <SidebarMenuItem className="flex items-center gap-2">
-              <SidebarMenuButton
-                tooltip="Quick Create"
-                className="min-w-8 bg-zinc-900 text-white dark:text-white duration-600 ease-linear hover:bg-zinc-700 hover:text-white active:bg-primary/90 active:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:active:bg-primary/90"
-              >
-                <PlusCircleIcon />
-                <span className="">New Checklist</span>
-              </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
 
