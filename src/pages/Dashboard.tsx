@@ -1,25 +1,34 @@
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
+import { BarChart3, Users, Settings, Info } from "lucide-react";
 
 export default function Dashboard() {
   const handleCard1Click = () => {
-    toast.success("Card 1 clicked!", {
-      description: "This is the first card action",
+    toast.success("Analytics clicked!", {
+      description: "Viewing analytics dashboard",
       position: "bottom-right",
     });
   };
 
   const handleCard2Click = () => {
-    toast.info("Card 2 clicked!", {
-      description: "This is the second card action", 
+    toast.info("Users clicked!", {
+      description: "Managing user accounts", 
       position: "bottom-right",
     });
   };
 
   const handleCard3Click = () => {
-    toast.warning("Card 3 clicked!", {
-      description: "This is the third card action",
+    toast.warning("Settings clicked!", {
+      description: "Accessing system settings",
       position: "bottom-right", 
+    });
+  };
+
+  const handleInfoClick = (cardName: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    toast.info(`${cardName} Info`, {
+      description: `More information about ${cardName.toLowerCase()}`,
+      position: "bottom-right",
     });
   };
 
@@ -28,22 +37,63 @@ export default function Dashboard() {
       <div className="p-4">
         <div className="flex flex-row flex-wrap gap-5 justify-center">
           <Card 
-            className="p-4 w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
+            className="w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
             onClick={handleCard1Click}
           >
-            CARD 1
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Views</CardTitle>
+                <button 
+                  onClick={(e) => handleInfoClick("Views", e)}
+                  className="h-4 w-4 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
+                >
+                  <Info className="h-2.5 w-2.5 text-muted-foreground" />
+                </button>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-3xl font-bold">9</div>
+            </CardContent>
           </Card>
+          
           <Card 
-            className="p-4 w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
+            className="w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
             onClick={handleCard2Click}
           >
-            CARD 2
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Unique viewers</CardTitle>
+                <button 
+                  onClick={(e) => handleInfoClick("Unique viewers", e)}
+                  className="h-4 w-4 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
+                >
+                  <Info className="h-2.5 w-2.5 text-muted-foreground" />
+                </button>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-3xl font-bold">2</div>
+            </CardContent>
           </Card>
+          
           <Card 
-            className="p-4 w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
+            className="w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
             onClick={handleCard3Click}
           >
-            CARD 3
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Total time watched</CardTitle>
+                <button 
+                  onClick={(e) => handleInfoClick("Total time watched", e)}
+                  className="h-4 w-4 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
+                >
+                  <Info className="h-2.5 w-2.5 text-muted-foreground" />
+                </button>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="text-3xl font-bold">02:12</div>
+            </CardContent>
           </Card>
         </div>
       </div>

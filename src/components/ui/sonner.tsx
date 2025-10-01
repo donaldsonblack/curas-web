@@ -34,7 +34,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         }
       `}</style>
       <Sonner
-        theme="light"
+        theme="system"
         className="toaster group"
         {...props}
       />
