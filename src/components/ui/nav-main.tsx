@@ -1,9 +1,6 @@
 "use client";
 
 import {
-  PlusCircleIcon,
-} from "lucide-react";
-import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
