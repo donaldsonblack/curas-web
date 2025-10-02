@@ -1,6 +1,6 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
-import { BarChart3, Users, Settings, Info } from "lucide-react";
+import { Info } from "lucide-react";
 
 
 export default function DashboardKpiCards() {

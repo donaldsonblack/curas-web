@@ -7,6 +7,7 @@ import {
 	FileText,
 	BarChart3,
 	Settings,
+	FormInput,
 } from "lucide-react";
 
 import Dashboard from "./pages/Dashboard";
@@ -17,6 +18,11 @@ import UsersPage from "./pages/Users";
 import Logs from "./pages/Logs";
 import Reports from "./pages/Reports";
 import SettingsPage from "./pages/Settings";
+
+// Form feature imports
+import { FormsIndexPage } from "./features/forms/pages/FormsIndexPage";
+import { FormBuilderPage } from "./features/forms/pages/FormBuilderPage";
+import { FormPublicPage } from "./features/forms/pages/FormPublicPage";
 
 export type AppRoute = {
 	path: string;
@@ -51,6 +57,12 @@ export const primaryRoutes: AppRoute[] = [
 		label: "Departments",
 		icon: <Building className="w-4 h-4" />,
 		element: <Departments />,
+	},
+	{
+		path: "/forms",
+		label: "Forms",
+		icon: <FormInput className="w-4 h-4" />,
+		element: <FormsIndexPage />,
 	},
 
 ];
@@ -90,6 +102,15 @@ export const hiddenRoutes: AppRoute[] = [
 	{
 		path: "/hidden",
 		element: <>HIDDEN</>,
+	},
+	// Form-specific routes
+	{
+		path: "/forms/:formId/builder",
+		element: <FormBuilderPage />,
+	},
+	{
+		path: "/forms/:formId",
+		element: <FormPublicPage />,
 	}
 ]
 
