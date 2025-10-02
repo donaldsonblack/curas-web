@@ -15,6 +15,7 @@ import {
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
 
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -103,19 +104,23 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status");
-      const colorMap = {
-        "pending": "bg-yellow-200",
-        "processing": "bg-blue-200",
-        "success": "bg-green-200",
-        "failed": "bg-red-200",
+      const status = row.getValue("status") as Payment["status"];
+      const statusConfig: Record<Payment["status"], { variant: string; className: string }> = {
+        "pending": { variant: "secondary", className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200" },
+        "processing": { variant: "secondary", className: "bg-blue-100 text-blue-800 hover:bg-blue-200" },
+        "success": { variant: "secondary", className: "bg-green-100 text-green-800 hover:bg-green-200" },
+        "failed": { variant: "destructive", className: "bg-red-100 text-red-800 hover:bg-red-200" },
       };
+      
+      const config = statusConfig[status] || { variant: "secondary", className: "bg-muted text-muted-foreground" };
+      
       return (
-        <Badge className={`${colorMap[status] || "bg-gray-200"} px-2 py-1 rounded-full text-xs font-semibold text-white`}>
+        <Badge className={`${config.className} capitalize`}>
           {status}
         </Badge>
       );
     },
+  },
   {
     accessorKey: "email",
     header: ({ column }) => {
