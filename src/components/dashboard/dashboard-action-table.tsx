@@ -221,6 +221,12 @@ export function DataTableDemo() {
 
   return (
     <div className="w-full">
+      <div className="space-y-1">
+        <h3 className="text-2xl font-semibold tracking-tight">Payments</h3>
+        <p className="text-sm text-muted-foreground">
+          Manage your payment transactions and view their status.
+        </p>
+      </div>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."
