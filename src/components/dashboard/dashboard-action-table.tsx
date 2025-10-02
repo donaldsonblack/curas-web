@@ -279,21 +279,32 @@ export function DataTableDemo() {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map((row) => {
+                const status = row.getValue("status") as Payment["status"];
+                const rowColorMap: Record<Payment["status"], string> = {
+                  "pending": "bg-yellow-50 hover:bg-yellow-100",
+                  "processing": "bg-blue-50 hover:bg-blue-100", 
+                  "success": "bg-green-50 hover:bg-green-100",
+                  "failed": "bg-red-50 hover:bg-red-100",
+                };
+                
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={`${rowColorMap[status] || "bg-background hover:bg-muted/50"}`}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell
