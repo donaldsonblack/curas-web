@@ -35,9 +35,9 @@ export default function DashboardKpiCards() {
 
     return (
         <div>
-            <div className="flex flex-row flex-wrap gap-5 justify-center">
+            <div className="flex flex-row flex-wrap gap-5 justify-between">
           <Card 
-            className="w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
+            className="w-full lg:w-[31%] cursor-pointer hover:shadow-lg transition-shadow" 
             onClick={handleCard1Click}
           >
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
@@ -57,7 +57,7 @@ export default function DashboardKpiCards() {
           </Card>
           
           <Card 
-            className="w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
+            className="w-full lg:w-[31%] cursor-pointer hover:shadow-lg transition-shadow" 
             onClick={handleCard2Click}
           >
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
@@ -77,7 +77,7 @@ export default function DashboardKpiCards() {
           </Card>
           
           <Card 
-            className="w-full lg:w-[30%] cursor-pointer hover:shadow-lg transition-shadow" 
+            className="w-full lg:w-[31%] cursor-pointer hover:shadow-lg transition-shadow" 
             onClick={handleCard3Click}
           >
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
