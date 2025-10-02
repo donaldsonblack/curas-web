@@ -8,16 +8,14 @@ export default function Dashboard() {
 
         <DashboardKpiCards />
 
-        <div className="mb-8 flex flex-wrap bg-grey-light">
-          
-
-          <div className="border-8 w-full lg:w-1/2 bg-grey">
+        <div className="mb-8 grid grid-cols-1 lg:grid-cols-4 gap-0 bg-grey-light">
+          <div className="border-8 lg:col-span-2 bg-grey">
             <DashboardMainGraph />
           </div>
 
-          <div className="border-8 w-full md:w-1/2 lg:w-1/4 bg-grey"></div>
-          <div className="border-8 w-full md:w-1/2 lg:w-1/4 bg-grey"></div>
-          </div>
+          <div className="border-8 lg:col-span-1 bg-grey"></div>
+          <div className="border-8 lg:col-span-1 bg-grey"></div>
+        </div>
         
       </div>
     </>
