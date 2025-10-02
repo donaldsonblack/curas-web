@@ -9,17 +9,17 @@ export default function Dashboard() {
 
         <DashboardKpiCards />
 
-        <div className="mb-8 grid grid-cols-1 lg:grid-cols-3 gap-0 bg-grey-light">
-          <div className="border-8 lg:col-span-2 bg-grey">
+        <div className="mb-8 grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div className="lg:col-span-2 bg-grey">
             <DashboardMainGraph />
           </div>
 
-          <div className="lg:col-span-1 grid grid-rows-2 gap-0">
-            <div className="border-8 bg-grey">
+          <div className="lg:col-span-1 grid grid-rows-2 gap-5">
+            <div className="">
               <DashboardTestCard></DashboardTestCard>
             </div>
-            
-            <div className="border-8 bg-grey">
+
+            <div className="">
               <DashboardTestCard></DashboardTestCard>
             </div>
           </div>
