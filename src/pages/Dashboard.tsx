@@ -1,3 +1,4 @@
+import { DataTableDemo } from "@/components/dashboard/dashboard-action-table";
 import DashboardKpiCards from "@/components/dashboard/dashboard-kpi-cards";
 import DashboardMainGraph from "@/components/dashboard/dashboard-main-graph";
 import DashboardTestCard from "@/components/dashboard/dashboard-test-card";
@@ -24,6 +25,10 @@ export default function Dashboard() {
             </div>
           </div>
 
+        </div>
+
+        <div>
+          <DataTableDemo />
         </div>
         
       </div>

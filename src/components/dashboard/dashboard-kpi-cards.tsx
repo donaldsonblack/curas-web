@@ -35,14 +35,14 @@ export default function DashboardKpiCards() {
 
     return (
         <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <Card 
             className="cursor-pointer hover:shadow-lg transition-shadow" 
             onClick={handleCard1Click}
           >
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Views</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">Completed Checklists</CardTitle>
                 <button 
                   onClick={(e) => handleInfoClick("Views", e)}
                   className="h-4 w-4 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
@@ -62,7 +62,7 @@ export default function DashboardKpiCards() {
           >
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Unique viewers</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">Total Checklists</CardTitle>
                 <button 
                   onClick={(e) => handleInfoClick("Unique viewers", e)}
                   className="h-4 w-4 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
@@ -82,7 +82,7 @@ export default function DashboardKpiCards() {
           >
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total time watched</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">Total time spent</CardTitle>
                 <button 
                   onClick={(e) => handleInfoClick("Total time watched", e)}
                   className="h-4 w-4 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
