@@ -41,7 +41,7 @@ interface ChecklistCardProps {
 function ChecklistCard({name, description}: ChecklistCardProps) {   
   return (
     <Card 
-      className="hover:shadow-md transition-shadow border border-border bg-card relative group"
+      className="hover:shadow-md transition-shadow border border-border bg-card relative group pb-4 pt-6"
     >
       {/* Hover overlay with edit and menu icons */}
       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
@@ -72,7 +72,7 @@ function ChecklistCard({name, description}: ChecklistCardProps) {
       </div>
 
       <CardContent className="h-full flex flex-col">
-        <div className="space-y-2 flex-1">
+        <div className="space-y-2 flex-1 mt-6 ">
           <h3 className="text-sm font-semibold text-card-foreground leading-tight">
             {name}
           </h3>
