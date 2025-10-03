@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Filter, Search, Plus, X, Edit, MoreHorizontal } from "lucide-react";
+import { Filter, Search, Plus, X, Edit, MoreHorizontal, Star } from "lucide-react";
 
 // Mock data for checklist cards
 const mockChecklists = [
@@ -33,16 +33,40 @@ interface Checklist {
 
 // interface for displaying the checklists. 
 interface ChecklistCardProps {
+  id: number;
   name: string;
   description: string;
+  isFavorited: boolean;
+  onToggleFavorite: (id: number) => void;
 }
 
 // function for displaying the checklists
-function ChecklistCard({name, description}: ChecklistCardProps) {   
+function ChecklistCard({id, name, description, isFavorited, onToggleFavorite}: ChecklistCardProps) {   
   return (
     <Card 
       className="hover:shadow-md transition-shadow border border-border bg-card relative group pb-4 pt-6"
     >
+      {/* Favorite star in top left */}
+      <div className="absolute top-2 left-2 z-10">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-6 w-6 p-0 hover:bg-background/80"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(id);
+          }}
+        >
+          <Star 
+            className={`h-4 w-4 transition-colors ${
+              isFavorited 
+                ? 'fill-yellow-400 text-yellow-400' 
+                : 'text-muted-foreground hover:text-yellow-400'
+            }`}
+          />
+        </Button>
+      </div>
+
       {/* Hover overlay with edit and menu icons */}
       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
         <div className="flex items-center gap-1 bg-background/90 backdrop-blur-sm border border-border rounded-md p-1 shadow-sm">
@@ -105,6 +129,20 @@ export default function ChecklistsGrid() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [favorites, setFavorites] = useState<Set<number>>(new Set());
+
+  // Toggle favorite status for a checklist
+  const toggleFavorite = (id: number) => {
+    setFavorites(prev => {
+      const newFavorites = new Set(prev);
+      if (newFavorites.has(id)) {
+        newFavorites.delete(id);
+      } else {
+        newFavorites.add(id);
+      }
+      return newFavorites;
+    });
+  };
 
   // Extract categories from checklist names for filtering
   // CHANGE WHEN PAYLOAD HAS CATEGORIES
@@ -247,8 +285,11 @@ export default function ChecklistsGrid() {
             {filteredChecklists.map((checklist: Checklist) => (
               <ChecklistCard 
                 key={checklist.id}
+                id={checklist.id}
                 name={checklist.name}
                 description={checklist.description}
+                isFavorited={favorites.has(checklist.id)}
+                onToggleFavorite={toggleFavorite}
               />
             ))}
           </div>
