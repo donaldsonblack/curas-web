@@ -1,6 +1,7 @@
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, Search, Plus } from "lucide-react";
+import { Filter, Search, Plus, X } from "lucide-react";
 import ChecklistCard from "@/components/checklists/checklist-cards";
 
 // Mock data for checklist cards
@@ -29,6 +30,51 @@ interface Checklist {
 }
 
 export default function Checklists() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState("all");
+
+  // Extract categories from checklist names for filtering
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+    mockChecklists.forEach(checklist => {
+      if (checklist.name.toLowerCase().includes('paediatric') || checklist.name.toLowerCase().includes('pediatric')) {
+        cats.add('pediatric');
+      } else if (checklist.name.toLowerCase().includes('emergency')) {
+        cats.add('emergency');
+      } else if (checklist.name.toLowerCase().includes('trolley')) {
+        cats.add('trolley');
+      } else if (checklist.name.toLowerCase().includes('anaesthetic') || checklist.name.toLowerCase().includes('anesthetic')) {
+        cats.add('anesthetic');
+      } else {
+        cats.add('other');
+      }
+    });
+    return Array.from(cats).sort();
+  }, []);
+
+  // Filter checklists based on search term and category
+  const filteredChecklists = useMemo(() => {
+    return mockChecklists.filter(checklist => {
+      const matchesSearch = searchTerm === "" || 
+        checklist.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        checklist.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesCategory = categoryFilter === "all" || 
+        (categoryFilter === 'pediatric' && (checklist.name.toLowerCase().includes('paediatric') || checklist.name.toLowerCase().includes('pediatric'))) ||
+        (categoryFilter === 'emergency' && checklist.name.toLowerCase().includes('emergency')) ||
+        (categoryFilter === 'trolley' && checklist.name.toLowerCase().includes('trolley')) ||
+        (categoryFilter === 'anesthetic' && (checklist.name.toLowerCase().includes('anaesthetic') || checklist.name.toLowerCase().includes('anesthetic'))) ||
+        (categoryFilter === 'other' && !checklist.name.toLowerCase().includes('paediatric') && !checklist.name.toLowerCase().includes('pediatric') && !checklist.name.toLowerCase().includes('emergency') && !checklist.name.toLowerCase().includes('trolley') && !checklist.name.toLowerCase().includes('anaesthetic') && !checklist.name.toLowerCase().includes('anesthetic'));
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchTerm, categoryFilter]);
+
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+
   return (
     <div className="flex flex-col h-full">
       
@@ -36,6 +82,9 @@ export default function Checklists() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 border-b bg-background">
         <div>
           <h1 className="text-2xl font-semibold text-foreground">Checklists</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {filteredChecklists.length} of {mockChecklists.length} checklists
+          </p>
         </div>
         
         <div className="flex items-center gap-2">
@@ -43,10 +92,26 @@ export default function Checklists() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input 
               placeholder="Search checklists..." 
-              className="pl-9 w-64"
+              className="pl-9 w-64 pr-8"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
+            {searchTerm && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0"
+                onClick={clearSearch}
+              >
+                <X className="h-3 w-3" />
+              </Button>
+            )}
           </div>
-          <Button variant="outline" size="icon">
+          <Button 
+            variant={showFilters ? "default" : "outline"} 
+            size="icon"
+            onClick={() => setShowFilters(!showFilters)}
+          >
             <Filter className="h-4 w-4" />
           </Button>
           <Button className="gap-2">
@@ -56,17 +121,66 @@ export default function Checklists() {
         </div>
       </div>
 
+      {/* Filter Section */}
+      {showFilters && (
+        <div className="border-b bg-muted/30 p-4">
+          <div className="flex flex-wrap gap-2">
+            <span className="text-sm font-medium text-muted-foreground mr-2">Category:</span>
+            <Button
+              variant={categoryFilter === "all" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCategoryFilter("all")}
+            >
+              All
+            </Button>
+            {categories.map(category => (
+              <Button
+                key={category}
+                variant={categoryFilter === category ? "default" : "outline"}
+                size="sm"
+                onClick={() => setCategoryFilter(category)}
+                className="capitalize"
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Grid Section */}
       <div className="flex-1 p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-          {mockChecklists.map((checklist: Checklist) => (
-            <ChecklistCard 
-              key={checklist.id}
-              name={checklist.name}
-              description={checklist.description}
-            />
-          ))}
-        </div>
+        {filteredChecklists.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-64 text-center">
+            <Search className="h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-medium text-muted-foreground mb-2">No checklists found</h3>
+            <p className="text-sm text-muted-foreground">
+              {searchTerm ? `No results for "${searchTerm}"` : "No checklists match the selected filters"}
+            </p>
+            {(searchTerm || categoryFilter !== "all") && (
+              <Button 
+                variant="outline" 
+                className="mt-4"
+                onClick={() => {
+                  setSearchTerm("");
+                  setCategoryFilter("all");
+                }}
+              >
+                Clear filters
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+            {filteredChecklists.map((checklist: Checklist) => (
+              <ChecklistCard 
+                key={checklist.id}
+                name={checklist.name}
+                description={checklist.description}
+              />
+            ))}
+          </div>
+        )}
       </div>
       
     </div>

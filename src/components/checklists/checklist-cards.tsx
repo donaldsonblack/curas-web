@@ -10,7 +10,7 @@ export default function ChecklistCard({name, description}: ChecklistCardProps) {
     <Card 
       className="hover:shadow-md transition-shadow cursor-pointer border border-border bg-card"
     >
-      <CardContent className="p-4 h-full flex flex-col">
+      <CardContent className="h-full flex flex-col">
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-card-foreground leading-tight">
             {name}
