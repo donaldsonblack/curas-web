@@ -3,6 +3,7 @@ import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Filter, Search, Plus, X, Edit, MoreHorizontal, Star } from "lucide-react";
+import { useIsMobile } from "../../hooks/useMobile";
 
 // Mock data for checklist cards
 const mockChecklists = [
@@ -41,13 +42,15 @@ interface ChecklistCardProps {
 }
 
 // function for displaying the checklists
-function ChecklistCard({id, name, description, isFavorited, onToggleFavorite}: ChecklistCardProps) {   
+function ChecklistCard({id, name, description, isFavorited, onToggleFavorite}: ChecklistCardProps) {
+  const isMobile = useIsMobile();
+  
   return (
     <Card 
       className="hover:shadow-md transition-shadow border border-border bg-card relative group pb-4 pt-6"
     >
       {/* Favorite star in top left */}
-      <div className="absolute top-2 left-2 z-10">
+      <div className="absolute top-3 left-3 z-10">
         <Button
           variant="ghost"
           size="sm"
@@ -68,7 +71,9 @@ function ChecklistCard({id, name, description, isFavorited, onToggleFavorite}: C
       </div>
 
       {/* Hover overlay with edit and menu icons */}
-      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+      <div className={`absolute top-2 right-2 transition-opacity duration-200 z-10 ${
+        isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+      }`}>
         <div className="flex items-center gap-1 bg-background/90 backdrop-blur-sm border border-border rounded-md p-1 shadow-sm">
           <Button
             variant="ghost"
@@ -95,7 +100,7 @@ function ChecklistCard({id, name, description, isFavorited, onToggleFavorite}: C
         </div>
       </div>
 
-      <CardContent className="h-full flex flex-col">
+      <CardContent className="h-full flex flex-col px-4">
         <div className="space-y-2 flex-1 mt-6 ">
           <h3 className="text-sm font-semibold text-card-foreground leading-tight">
             {name}
