@@ -5,26 +5,27 @@ import { Filter, Search, Plus } from "lucide-react";
 
 // Mock data for checklist cards
 const mockChecklists = [
-  { id: 1, name: "Tracheostomy Emergency Pack Contents" },
-  { id: 2, name: "TAVI Trolley" },
-  { id: 3, name: "SHUR - Resuscitation equipment daily checklist" },
-  { id: 4, name: "Paediatric Trolley" },
-  { id: 5, name: "Paediatric Emergency Trolley (Responses)" },
-  { id: 6, name: "Paediatric Emergency Trolley" },
-  { id: 7, name: "OTF Paediatric Airway Bag" },
-  { id: 8, name: "OTF EMERGENCY/BLEEDING BOX" },
-  { id: 9, name: "OTF ADULT AIRWAY BAG CONTENTS" },
-  { id: 10, name: "Off Floor/Spare Anaesthetic machine checks" },
-  { id: 11, name: "MRI Trolley" },
-  { id: 12, name: "Midline Trolley" },
-  { id: 13, name: "Malignant Hyperthermia Trolley" },
-  { id: 14, name: "Holding bay-Anaesthetic Machine and Equipment" },
-  { id: 15, name: "End of shift check- Anaesthetic Nursing" }
+  { id: 1, name: "Tracheostomy Emergency Pack Contents", description: "Essential emergency equipment for tracheostomy procedures" },
+  { id: 2, name: "TAVI Trolley", description: "Transcatheter aortic valve implantation equipment checklist" },
+  { id: 3, name: "SHUR - Resuscitation equipment daily checklist", description: "Daily verification of resuscitation equipment readiness" },
+  { id: 4, name: "Paediatric Trolley", description: "Specialized equipment for pediatric emergency care" },
+  { id: 5, name: "Paediatric Emergency Trolley (Responses)", description: "Response protocols for pediatric emergency situations" },
+  { id: 6, name: "Paediatric Emergency Trolley", description: "Complete pediatric emergency equipment inventory" },
+  { id: 7, name: "OTF Paediatric Airway Bag", description: "Pediatric airway management tools and supplies" },
+  { id: 8, name: "OTF EMERGENCY/BLEEDING BOX", description: "Emergency bleeding control equipment and supplies" },
+  { id: 9, name: "OTF ADULT AIRWAY BAG CONTENTS", description: "Adult airway management equipment inventory" },
+  { id: 10, name: "Off Floor/Spare Anaesthetic machine checks", description: "Backup anesthetic equipment verification checklist" },
+  { id: 11, name: "MRI Trolley", description: "MRI-compatible equipment and safety checklist" },
+  { id: 12, name: "Midline Trolley", description: "Midline catheter insertion equipment checklist" },
+  { id: 13, name: "Malignant Hyperthermia Trolley", description: "Emergency treatment for malignant hyperthermia episodes" },
+  { id: 14, name: "Holding bay-Anaesthetic Machine and Equipment", description: "Pre-operative anesthetic equipment verification" },
+  { id: 15, name: "End of shift check- Anaesthetic Nursing", description: "End-of-shift equipment and safety verification" }
 ];
 
 interface Checklist {
   id: number;
   name: string;
+  description: string;
 }
 
 export default function Checklists() {
@@ -61,12 +62,17 @@ export default function Checklists() {
           {mockChecklists.map((checklist: Checklist) => (
             <Card 
               key={checklist.id} 
-              className="hover:shadow-md transition-shadow cursor-pointer border border-border bg-card"
+              className="hover:shadow-md transition-shadow cursor-pointer border border-border bg-card "
             >
-              <CardContent className="p-4">
-                <h3 className="text-sm font-medium text-card-foreground leading-tight">
-                  {checklist.name}
-                </h3>
+              <CardContent className=" h-full flex flex-col">
+                <div className="">
+                  <h3 className="text-sm font-semibold text-card-foreground leading-tight">
+                    {checklist.name}
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {checklist.description}
+                  </p>
+                </div>
               </CardContent>
             </Card>
           ))}
