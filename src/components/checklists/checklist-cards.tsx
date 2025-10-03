@@ -23,24 +23,28 @@ const mockChecklists = [
   { id: 15, name: "End of shift check- Anaesthetic Nursing", description: "End-of-shift equipment and safety verification" }
 ];
 
+
+// for ordering the checklists, using ID
 interface Checklist {
   id: number;
   name: string;
   description: string;
 }
 
+// interface for displaying the checklists. 
 interface ChecklistCardProps {
   name: string;
   description: string;
 }
 
+// function for displaying the checklists
 function ChecklistCard({name, description}: ChecklistCardProps) {   
   return (
     <Card 
-      className="hover:shadow-md transition-shadow cursor-pointer border border-border bg-card"
+      className="hover:shadow-md transition-shadow border border-border bg-card"
     >
-      <CardContent className="h-full flex flex-col">
-        <div className="space-y-2">
+      <CardContent className="h-full flex flex-col p-4">
+        <div className="space-y-2 flex-1">
           <h3 className="text-sm font-semibold text-card-foreground leading-tight">
             {name}
           </h3>
@@ -48,17 +52,34 @@ function ChecklistCard({name, description}: ChecklistCardProps) {
             {description}
           </p>
         </div>
+        <div className="mt-4">
+          <Button 
+            size="sm" 
+            className="w-full"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Handle start checklist action
+              console.log(`Starting checklist: ${name}`);
+            }}
+          >
+            Start
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
 }
 
+// function for displaying the checklists grid.
 export default function ChecklistsGrid() {
+
+    // states for search and filters
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState("all");
 
   // Extract categories from checklist names for filtering
+  // CHANGE WHEN PAYLOAD HAS CATEGORIES
   const categories = useMemo(() => {
     const cats = new Set<string>();
     mockChecklists.forEach(checklist => {
