@@ -11,6 +11,7 @@ import {
 
 import Dashboard from "./pages/Dashboard";
 import Checklists from "./pages/Checklists";
+import ChecklistEntry from "./pages/ChecklistEntry";
 import Equipment from "./pages/Equipment";
 import Departments from "./pages/Departments";
 import UsersPage from "./pages/Users";
@@ -90,6 +91,10 @@ export const hiddenRoutes: AppRoute[] = [
 	{
 		path: "/hidden",
 		element: <>HIDDEN</>,
+	},
+	{
+		path: "/checklist/:id",
+		element: <ChecklistEntry />,
 	}
 ]
 

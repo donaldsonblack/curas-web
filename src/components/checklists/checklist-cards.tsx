@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -44,6 +45,7 @@ interface ChecklistCardProps {
 // function for displaying the checklists
 function ChecklistCard({id, name, description, isFavorited, onToggleFavorite}: ChecklistCardProps) {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   
   return (
     <Card 
@@ -115,8 +117,7 @@ function ChecklistCard({id, name, description, isFavorited, onToggleFavorite}: C
             className="w-full"
             onClick={(e) => {
               e.stopPropagation();
-              // Handle start checklist action
-              console.log(`Starting checklist: ${name}`);
+              navigate(`/checklist/${id}`);
             }}
           >
             Start
