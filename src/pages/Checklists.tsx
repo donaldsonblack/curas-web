@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Filter, Search, Plus } from "lucide-react";
+import ChecklistCard from "@/components/checklists/checklist-cards";
 
 // Mock data for checklist cards
 const mockChecklists = [
@@ -60,24 +60,15 @@ export default function Checklists() {
       <div className="flex-1 p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
           {mockChecklists.map((checklist: Checklist) => (
-            <Card 
-              key={checklist.id} 
-              className="hover:shadow-md transition-shadow cursor-pointer border border-border bg-card "
-            >
-              <CardContent className=" h-full flex flex-col">
-                <div className="">
-                  <h3 className="text-sm font-semibold text-card-foreground leading-tight">
-                    {checklist.name}
-                  </h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {checklist.description}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <ChecklistCard 
+              key={checklist.id}
+              name={checklist.name}
+              description={checklist.description}
+            />
           ))}
         </div>
       </div>
+      
     </div>
   );
 }
