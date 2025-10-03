@@ -1,10 +1,7 @@
 export default function Checklists() {
   return (
-    <div className="p-4">
+    <div>
       <h1>Checklists</h1>
-      <div>
-        
-      </div>
     </div>
   );
 }

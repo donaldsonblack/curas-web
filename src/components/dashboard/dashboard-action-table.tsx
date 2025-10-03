@@ -102,17 +102,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown />
-        </Button>
-      )
-    },
+    header: "Status",
     cell: ({ row }) => {
       const status = row.getValue("status") as Payment["status"];
       const statusConfig: Record<Payment["status"], { variant: string; className: string }> = {
@@ -128,7 +118,6 @@ export const columns: ColumnDef<Payment>[] = [
         <Badge className={`${config.className} capitalize`}>
           {status}
         </Badge>
-        
       );
     },
   },
@@ -233,9 +222,9 @@ export function DataTableDemo() {
   return (
     <div className="w-full">
       <div className="space-y-1">
-        <h3 className="text-2xl font-semibold tracking-tight">Actions</h3>
+        <h3 className="text-2xl font-semibold tracking-tight">Payments</h3>
         <p className="text-sm text-muted-foreground">
-          Manage your actions and view their status.
+          Manage your payment transactions and view their status.
         </p>
       </div>
       <div className="flex items-center py-4">
