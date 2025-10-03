@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Filter, Search, Plus, X } from "lucide-react";
+import { Filter, Search, Plus, X, Edit, MoreHorizontal } from "lucide-react";
 
 // Mock data for checklist cards
 const mockChecklists = [
@@ -41,9 +41,37 @@ interface ChecklistCardProps {
 function ChecklistCard({name, description}: ChecklistCardProps) {   
   return (
     <Card 
-      className="hover:shadow-md transition-shadow border border-border bg-card"
+      className="hover:shadow-md transition-shadow border border-border bg-card relative group"
     >
-      <CardContent className="h-full flex flex-col p-4">
+      {/* Hover overlay with edit and menu icons */}
+      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+        <div className="flex items-center gap-1 bg-background/90 backdrop-blur-sm border border-border rounded-md p-1 shadow-sm">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-6 w-6 p-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log(`Edit checklist: ${name}`);
+            }}
+          >
+            <Edit className="h-3 w-3" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-6 w-6 p-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log(`More options for: ${name}`);
+            }}
+          >
+            <MoreHorizontal className="h-3 w-3" />
+          </Button>
+        </div>
+      </div>
+
+      <CardContent className="h-full flex flex-col">
         <div className="space-y-2 flex-1">
           <h3 className="text-sm font-semibold text-card-foreground leading-tight">
             {name}
@@ -195,7 +223,7 @@ export default function ChecklistsGrid() {
       {/* Grid Section */}
       <div className="flex-1 p-6">
         {filteredChecklists.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-center">
+          <div className="flex flex-col items-center justify-center  text-center">
             <Search className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium text-muted-foreground mb-2">No checklists found</h3>
             <p className="text-sm text-muted-foreground">
